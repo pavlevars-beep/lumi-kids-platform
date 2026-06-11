@@ -51,7 +51,7 @@ export function ContactPage() {
             </div>
             <div>
               <p className="font-bold text-gray-700 mb-1">Adresa</p>
-              <p className="text-gray-500 text-sm">Bulevar oslobođenja 123<br />11000 Beograd, Srbija</p>
+              <p className="text-gray-500 text-sm">Svetolika Rankovića 27/11, I sprat<br />Kragujevac, Srbija</p>
             </div>
           </div>
           <div className="bg-white rounded-3xl shadow-card p-6 flex items-start gap-4">
@@ -60,7 +60,7 @@ export function ContactPage() {
             </div>
             <div>
               <p className="font-bold text-gray-700 mb-1">Telefon</p>
-              <p className="text-gray-500 text-sm">+381 11 123 4567</p>
+              <p className="text-gray-500 text-sm">+381 69 304 27 21</p>
             </div>
           </div>
           <div className="bg-white rounded-3xl shadow-card p-6 flex items-start gap-4">
@@ -69,13 +69,12 @@ export function ContactPage() {
             </div>
             <div>
               <p className="font-bold text-gray-700 mb-1">Email</p>
-              <p className="text-gray-500 text-sm">info@lumikids.rs</p>
+              <p className="text-gray-500 text-sm">studiolumikids@gmail.com</p>
             </div>
           </div>
           <div className="bg-lumi-warm rounded-3xl p-6">
-            <h3 className="font-extrabold text-gray-800 mb-2">Radno vreme</h3>
-            <p className="text-gray-500 text-sm">Ponedeljak – Petak: 9:00 – 18:00</p>
-            <p className="text-gray-500 text-sm">Subota: 10:00 – 14:00</p>
+            <h3 className="font-extrabold text-gray-800 mb-2">Grupne posete</h3>
+            <p className="text-gray-500 text-sm">Za grupne posete molimo vas da se javite unapred kako bismo dogovorili termin i prilagodili radionice uzrastu.</p>
           </div>
         </div>
       </div>
