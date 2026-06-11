@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, BookOpen, Newspaper, LogOut, Sparkles } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Newspaper, LogOut } from 'lucide-react'
 import { useAuth } from '../../features/auth/hooks/useAuth'
 import { useTranslation } from '../../i18n/useTranslation'
 
@@ -21,10 +21,9 @@ export function AdminLayout() {
 
   return (
     <div className="min-h-screen flex">
-      <aside className="w-60 bg-white shadow-card flex flex-col">
-        <div className="h-16 flex items-center px-6 gap-2 font-extrabold text-lumi-primary border-b border-gray-100">
-          <Sparkles className="w-5 h-5" />
-          LumiKids Admin
+      <aside className="w-60 bg-lumi-dark-blue flex flex-col">
+        <div className="h-16 flex items-center justify-center px-4 border-b border-blue-700">
+          <img src="/logo.png" alt="LumiKids Studio" className="h-10 w-auto object-contain brightness-0 invert" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(item => (
@@ -34,7 +33,9 @@ export function AdminLayout() {
               end={item.end}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                  isActive ? 'bg-lumi-primary-light text-lumi-primary' : 'text-gray-600 hover:bg-lumi-warm'
+                  isActive
+                    ? 'bg-lumi-blue text-white shadow-glow'
+                    : 'text-blue-200 hover:bg-blue-700 hover:text-white'
                 }`
               }
             >
@@ -43,10 +44,10 @@ export function AdminLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="p-4 border-t border-gray-100">
+        <div className="p-4 border-t border-blue-700">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-gray-600 hover:bg-red-50 hover:text-red-500 transition-all w-full"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-blue-200 hover:bg-red-500 hover:text-white transition-all w-full"
           >
             <LogOut className="w-4 h-4" />
             {t.admin.nav.logout}

@@ -5,22 +5,25 @@ export default {
     extend: {
       colors: {
         lumi: {
-          primary: '#FF6B6B',
+          // Brand palette from brand guide
+          primary: '#FF4B4B',       // Primary Red
           'primary-light': '#FFE5E5',
-          secondary: '#4ECDC4',
-          'secondary-light': '#E0F7F6',
-          accent: '#FFD93D',
-          warm: '#FFF9F0',
-          'warm-dark': '#FFF0DC',
+          orange: '#FF9E3D',        // Primary Orange
+          yellow: '#FFD700',        // Primary Yellow
+          green: '#8BC34A',         // Primary Green
+          blue: '#03A9F4',          // Primary Blue
+          'dark-blue': '#0277BD',   // Secondary Dark Blue
+          secondary: '#03A9F4',     // alias → Primary Blue
+          'secondary-light': '#E1F5FE',
+          warm: '#FFFBF0',
+          'warm-dark': '#FFF3D0',
           sage: '#8BC34A',
-          lavender: '#B39DDB',
-          sky: '#64B5F6',
-          coral: '#FF8A65',
-          peach: '#FFCCBC',
+          sky: '#03A9F4',
         }
       },
       fontFamily: {
-        sans: ['Nunito', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['"Bubblegum Sans"', 'cursive'],
+        sans: ['Nunito', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         'xl': '1rem',
@@ -28,9 +31,24 @@ export default {
         '3xl': '2rem',
       },
       boxShadow: {
-        'warm': '0 4px 20px rgba(255, 107, 107, 0.1)',
-        'card': '0 2px 12px rgba(0, 0, 0, 0.08)',
-      }
+        'warm': '0 4px 20px rgba(255, 75, 75, 0.15)',
+        'card': '0 2px 16px rgba(0, 0, 0, 0.08)',
+        'glow': '0 0 30px rgba(3, 169, 244, 0.25)',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+      },
+      animation: {
+        float: 'float 3s ease-in-out infinite',
+        wiggle: 'wiggle 1s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
