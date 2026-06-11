@@ -14,9 +14,9 @@ export function AdminLayout() {
   }
 
   const navItems = [
-    { to: '/admin', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
-    { to: '/admin/radionice', label: t.admin.nav.workshops, icon: BookOpen, end: false },
-    { to: '/admin/tekstovi', label: t.admin.nav.articles, icon: Newspaper, end: false },
+    { to: '/admin/dashboard', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
+    { to: '/admin/workshops', label: t.admin.nav.workshops, icon: BookOpen, end: false },
+    { to: '/admin/articles', label: t.admin.nav.articles, icon: Newspaper, end: false },
   ]
 
   return (

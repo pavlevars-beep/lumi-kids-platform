@@ -8,12 +8,12 @@ export function PublicLayout() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const navLinks = [
-    { to: '/radionice', label: t.nav.workshops },
-    { to: '/tekstovi', label: t.nav.articles },
-    { to: '/brza-igra', label: t.nav.quickPlay },
-    { to: '/ai-savetnik', label: t.nav.aiAdvisor },
-    { to: '/o-nama', label: t.nav.about },
-    { to: '/kontakt', label: t.nav.contact },
+    { to: '/workshops', label: t.nav.workshops },
+    { to: '/articles', label: t.nav.articles },
+    { to: '/quick-play', label: t.nav.quickPlay },
+    { to: '/ai-advisor', label: t.nav.aiAdvisor },
+    { to: '/about', label: t.nav.about },
+    { to: '/contact', label: t.nav.contact },
   ]
 
   return (
@@ -73,8 +73,8 @@ export function PublicLayout() {
           </div>
           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} LumiKids Studio. Sva prava zadržana.</p>
           <nav className="flex gap-4 text-sm">
-            <Link to="/o-nama" className="text-gray-500 hover:text-lumi-primary font-medium">O nama</Link>
-            <Link to="/kontakt" className="text-gray-500 hover:text-lumi-primary font-medium">Kontakt</Link>
+            <Link to="/about" className="text-gray-500 hover:text-lumi-primary font-medium">O nama</Link>
+            <Link to="/contact" className="text-gray-500 hover:text-lumi-primary font-medium">Kontakt</Link>
           </nav>
         </div>
       </footer>
