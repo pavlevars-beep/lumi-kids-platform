@@ -4,16 +4,11 @@ import { Music, Pause, Play } from 'lucide-react'
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
-  const [ready, setReady] = useState(false)
-
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
     audio.volume = 0.35
     audio.loop = true
-    const onReady = () => setReady(true)
-    audio.addEventListener('canplaythrough', onReady)
-    return () => audio.removeEventListener('canplaythrough', onReady)
   }, [])
 
   const toggle = () => {
