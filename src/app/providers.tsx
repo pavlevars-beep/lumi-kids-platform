@@ -1,10 +1,6 @@
 import { ReactNode } from 'react'
-import { AuthProvider } from '../features/auth/hooks/useAuth'
+import { AuthProvider } from '../features/auth/components/AuthContext'
 
-interface ProvidersProps {
-  children: ReactNode
-}
-
-export default function Providers({ children }: ProvidersProps) {
+export function Providers({ children }: { children: ReactNode }) {
   return <AuthProvider>{children}</AuthProvider>
 }
