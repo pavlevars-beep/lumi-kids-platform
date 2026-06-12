@@ -23,7 +23,7 @@ export function AdminLayout() {
     <div className="min-h-screen flex">
       <aside className="w-60 bg-lumi-dark-blue flex flex-col">
         <div className="h-16 flex items-center justify-center px-4 border-b border-blue-700">
-          <img src="/logo.svg" alt="LumiKids Studio" className="h-10 w-auto object-contain brightness-0 invert" />
+          <img src="/logo.png" alt="LumiKids Studio" className="h-10 w-auto object-contain brightness-0 invert" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(item => (

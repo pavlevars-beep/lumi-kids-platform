@@ -23,7 +23,7 @@ export function PublicLayout() {
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           <Link to="/" className="flex-shrink-0">
             <img
-              src="/logo.svg"
+              src="/logo.png"
               alt="LumiKids Studio"
               className="h-12 w-auto object-contain"
             />
@@ -81,7 +81,7 @@ export function PublicLayout() {
 
       <footer className="bg-lumi-dark-blue text-white py-8 mt-12">
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <img src="/logo.svg" alt="LumiKids Studio" className="h-10 w-auto object-contain brightness-0 invert" />
+          <img src="/logo.png" alt="LumiKids Studio" className="h-10 w-auto object-contain brightness-0 invert" />
           <p className="text-blue-200 text-sm">© {new Date().getFullYear()} LumiKids Studio. Sva prava zadržana.</p>
           <nav className="flex gap-4 text-sm">
             <Link to="/about" className="text-blue-200 hover:text-white font-medium transition-colors">O nama</Link>
