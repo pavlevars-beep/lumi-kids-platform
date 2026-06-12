@@ -34,6 +34,7 @@ export interface Workshop {
   learning_goals: string | null
   location: string | null
   capacity: number | null
+  price: number | null
   workshop_icon_url: string | null
   featured_image_type: FeaturedImageType
   featured_image_url: string | null

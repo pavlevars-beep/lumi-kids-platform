@@ -4,8 +4,6 @@ import { ArticleCard } from '../../components/ArticleCard'
 import { LoadingState } from '../../../../components/ui/LoadingState'
 import { ErrorState } from '../../../../components/ui/ErrorState'
 import { EmptyState } from '../../../../components/ui/EmptyState'
-import { SetupBanner } from '../../../../components/ui/SetupBanner'
-import { isSupabaseConfigured } from '../../../../lib/supabaseClient'
 import type { Article } from '../../types'
 
 const CATEGORIES = [
@@ -54,7 +52,6 @@ export function ArticlesPage() {
         <p className="section-subtitle">Inspiracija i podrška za roditelje</p>
       </div>
 
-      {!isSupabaseConfigured && <SetupBanner />}
 
       <div className="flex flex-wrap gap-3 mb-8">
         <input

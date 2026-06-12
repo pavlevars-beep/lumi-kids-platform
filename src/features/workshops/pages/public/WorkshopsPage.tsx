@@ -4,8 +4,6 @@ import { WorkshopCard } from '../../components/WorkshopCard'
 import { LoadingState } from '../../../../components/ui/LoadingState'
 import { ErrorState } from '../../../../components/ui/ErrorState'
 import { EmptyState } from '../../../../components/ui/EmptyState'
-import { SetupBanner } from '../../../../components/ui/SetupBanner'
-import { isSupabaseConfigured } from '../../../../lib/supabaseClient'
 import type { Workshop, WorkshopCategory } from '../../types'
 
 const CATEGORIES: { value: string; label: string }[] = [
@@ -58,7 +56,6 @@ export function WorkshopsPage() {
         <p className="section-subtitle">Osmišljena iskustva koja ostavljaju trag</p>
       </div>
 
-      {!isSupabaseConfigured && <SetupBanner />}
 
       <div className="flex flex-wrap gap-3 mb-8">
         <select
