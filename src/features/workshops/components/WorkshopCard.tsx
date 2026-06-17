@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Calendar, Clock, Users } from 'lucide-react'
+import { CalendarBlank, Clock, Users } from '@phosphor-icons/react'
 import { getPresetByKey } from '../../media/presets'
 import type { Workshop } from '../types'
 import { sr } from '../../../i18n/sr'
@@ -54,17 +54,17 @@ export function WorkshopCard({ workshop }: Props) {
 
         <div className="space-y-1.5 mb-4">
           <div className="flex items-center gap-2 text-sm text-lumi-muted">
-            <Calendar size={14} className="text-lumi-secondary flex-shrink-0" />
+            <CalendarBlank size={14} className="text-lumi-secondary flex-shrink-0" weight="duotone" />
             <span>{formattedDate}</span>
           </div>
           {workshop.start_time && (
             <div className="flex items-center gap-2 text-sm text-lumi-muted">
-              <Clock size={14} className="text-lumi-secondary flex-shrink-0" />
+              <Clock size={14} className="text-lumi-secondary flex-shrink-0" weight="duotone" />
               <span>{workshop.start_time}{workshop.end_time ? ` – ${workshop.end_time}` : ''}</span>
             </div>
           )}
           <div className="flex items-center gap-2 text-sm text-lumi-muted">
-            <Users size={14} className="text-lumi-secondary flex-shrink-0" />
+            <Users size={14} className="text-lumi-secondary flex-shrink-0" weight="duotone" />
             <span>Uzrast: {workshop.age_group}</span>
           </div>
         </div>

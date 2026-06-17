@@ -8,9 +8,9 @@ const MOCK_ARTICLES: Article[] = [
     title: 'Kako da podržimo dete bez pritiska',
     slug: 'kako-da-podrzimo-dete-bez-pritiska',
     category: 'Parenting',
-    featured_image_type: 'preset',
-    featured_image_url: null,
-    preset_image_key: 'roditeljstvo',
+    featured_image_type: 'upload',
+    featured_image_url: 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?w=800&q=80',
+    preset_image_key: null,
     excerpt: 'Deci je potrebna podrška koja ih ohrabruje, ali ne opterećuje očekivanjima.',
     body: `Svaki roditelj želi da pomogne detetu da uspeje. Ali ponekad ta želja, nesvesno, postaje pritisak.
 
@@ -41,9 +41,9 @@ Deca koja osećaju bezuslovnu podršku hrabrija su da pokušaju, greše i rastu.
     title: 'Zašto je dosada važna za kreativnost',
     slug: 'zasto-je-dosada-vazna-za-kreativnost',
     category: 'Creativity',
-    featured_image_type: 'preset',
-    featured_image_url: null,
-    preset_image_key: 'kreativnost',
+    featured_image_type: 'upload',
+    featured_image_url: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80',
+    preset_image_key: null,
     excerpt: 'Dosada nije praznina koju odmah treba popuniti, već prostor u kom dete počinje da stvara.',
     body: `U svetu u kom je svaka minuta ispunjena sadržajem, dosada zvuči kao problem koji treba rešiti. Ali istraživači nam govore nešto drugačije.
 
@@ -76,9 +76,9 @@ Kreativnost se ne uči – ona se dešava kada ima prostora.`,
     title: 'Kada dete kaže "neću"',
     slug: 'kada-dete-kaze-necu',
     category: 'Emotions & Behavior',
-    featured_image_type: 'preset',
-    featured_image_url: null,
-    preset_image_key: 'emocije',
+    featured_image_type: 'upload',
+    featured_image_url: 'https://images.unsplash.com/photo-1484665754804-74b091211472?w=800&q=80',
+    preset_image_key: null,
     excerpt: 'Tvrdoglavost često nije neposlušnost, već pokušaj deteta da oseti kontrolu, granicu ili sigurnost.',
     body: `"Neću!" – dve reči koje mogu da izazovu trenutnu frustraciju kod svakog roditelja. Ali šta se zapravo krije iza njih?
 
