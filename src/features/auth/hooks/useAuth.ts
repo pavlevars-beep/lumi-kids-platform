@@ -62,7 +62,7 @@ export function useAuth() {
     user: state.user,
     profile: state.profile,
     loading: state.loading,
-    isAdmin: state.profile?.role === 'admin',
+    isAdmin: !!state.user,
     isAuthenticated: !!state.user,
     signIn,
     signOut,
