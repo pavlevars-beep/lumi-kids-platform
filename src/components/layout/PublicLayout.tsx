@@ -1,6 +1,6 @@
 import { Outlet, Link, NavLink } from 'react-router-dom'
 import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { List, X } from '@phosphor-icons/react'
 import { useTranslation } from '../../i18n/useTranslation'
 import { MusicPlayer } from '../ui/MusicPlayer'
 
@@ -50,7 +50,7 @@ export function PublicLayout() {
           <div className="flex items-center gap-2">
             <MusicPlayer />
             <button className="md:hidden p-2 text-gray-600" onClick={() => setMenuOpen(!menuOpen)}>
-              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {menuOpen ? <X className="w-6 h-6" weight="duotone" /> : <List className="w-6 h-6" weight="duotone" />}
             </button>
           </div>
         </div>

@@ -22,8 +22,8 @@ export default {
         }
       },
       fontFamily: {
-        display: ['"Bubblegum Sans"', 'cursive'],
-        sans: ['Nunito', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         'xl': '1rem',

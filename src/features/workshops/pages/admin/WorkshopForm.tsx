@@ -34,6 +34,24 @@ function calcEndTime(start: string, minutes: string): string {
   return `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
 }
 
+interface FieldProps {
+  label: string
+  error?: string
+  children: React.ReactNode
+  required?: boolean
+}
+function Field({ label, error, children, required = false }: FieldProps) {
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+        {label}{required && <span className="text-lumi-primary ml-1">*</span>}
+      </label>
+      {children}
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+    </div>
+  )
+}
+
 interface Props { existing?: Workshop }
 
 export function WorkshopForm({ existing }: Props) {
@@ -109,16 +127,6 @@ export function WorkshopForm({ existing }: Props) {
       setSaving(false)
     }
   }
-
-  const Field = ({ label, error, children, required = false }: { label: string; error?: string; children: React.ReactNode; required?: boolean }) => (
-    <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-        {label}{required && <span className="text-lumi-primary ml-1">*</span>}
-      </label>
-      {children}
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
-  )
 
   const inputCls = 'w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-lumi-blue/30 bg-white'
   const textareaCls = `${inputCls} resize-none`

@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, BookOpen, Newspaper, LogOut } from 'lucide-react'
+import { ChartPieSlice, BookOpenText, NewspaperClipping, SignOut } from '@phosphor-icons/react'
 import { useAuth } from '../../features/auth/hooks/useAuth'
 import { useTranslation } from '../../i18n/useTranslation'
 
@@ -14,9 +14,9 @@ export function AdminLayout() {
   }
 
   const navItems = [
-    { to: '/admin/dashboard', label: t.admin.nav.dashboard, icon: LayoutDashboard, end: true },
-    { to: '/admin/workshops', label: t.admin.nav.workshops, icon: BookOpen, end: false },
-    { to: '/admin/articles', label: t.admin.nav.articles, icon: Newspaper, end: false },
+    { to: '/admin/dashboard', label: t.admin.nav.dashboard, icon: ChartPieSlice, end: true },
+    { to: '/admin/workshops', label: t.admin.nav.workshops, icon: BookOpenText, end: false },
+    { to: '/admin/articles', label: t.admin.nav.articles, icon: NewspaperClipping, end: false },
   ]
 
   return (
@@ -39,7 +39,7 @@ export function AdminLayout() {
                 }`
               }
             >
-              <item.icon className="w-4 h-4" />
+              <item.icon className="w-4 h-4" weight="duotone" />
               {item.label}
             </NavLink>
           ))}
@@ -49,7 +49,7 @@ export function AdminLayout() {
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-blue-200 hover:bg-red-500 hover:text-white transition-all w-full"
           >
-            <LogOut className="w-4 h-4" />
+            <SignOut className="w-4 h-4" weight="duotone" />
             {t.admin.nav.logout}
           </button>
         </div>

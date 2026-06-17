@@ -21,6 +21,24 @@ function renderBody(text: string) {
   ))
 }
 
+interface FieldProps {
+  label: string
+  error?: string
+  children: React.ReactNode
+  required?: boolean
+}
+function Field({ label, error, children, required = false }: FieldProps) {
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+        {label}{required && <span className="text-lumi-primary ml-1">*</span>}
+      </label>
+      {children}
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+    </div>
+  )
+}
+
 interface Props { existing?: Article }
 
 export function ArticleForm({ existing }: Props) {
@@ -82,16 +100,6 @@ export function ArticleForm({ existing }: Props) {
       setSaving(false)
     }
   }
-
-  const Field = ({ label, error, children, required = false }: { label: string; error?: string; children: React.ReactNode; required?: boolean }) => (
-    <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-        {label}{required && <span className="text-lumi-primary ml-1">*</span>}
-      </label>
-      {children}
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
-  )
 
   const inputCls = 'w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-lumi-blue/30 bg-white'
 

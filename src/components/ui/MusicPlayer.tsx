@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Music, Pause, Play } from 'lucide-react'
+import { MusicNote, Pause, Play } from '@phosphor-icons/react'
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -34,8 +34,8 @@ export function MusicPlayer() {
             : 'bg-lumi-warm-dark text-lumi-dark-blue hover:bg-lumi-blue hover:text-white'
         }`}
       >
-        <Music className={`w-3.5 h-3.5 ${playing ? 'animate-pulse' : ''}`} />
-        {playing ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+        <MusicNote className={`w-3.5 h-3.5 ${playing ? 'animate-pulse' : ''}`} weight="duotone" />
+        {playing ? <Pause className="w-3 h-3" weight="duotone" /> : <Play className="w-3 h-3" weight="duotone" />}
         <span className="hidden sm:inline">{playing ? 'Muzika' : 'Muzika'}</span>
       </button>
     </div>
