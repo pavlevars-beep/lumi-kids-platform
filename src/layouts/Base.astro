@@ -43,6 +43,8 @@ const ogImage = new URL(image, Astro.site);
     })} />
     <link rel="sitemap" href="/sitemap.xml" />
     <slot name="head" />
+    <!-- Cloudflare Web Analytics (bez kolačića) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "21d205447fe949dd9c70e1823452e2cc"}'></script>
   </head>
   <body>
     <Header />
