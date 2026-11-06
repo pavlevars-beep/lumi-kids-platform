@@ -93,7 +93,7 @@ Otvoreni odgovori često su korisniji od ocena, jer daju konkretne ideje.
 
 - Koliko fotografija za koje postoji saglasnost možete koristiti u internoj komunikaciji?
 - Kako su reagovali zaposleni na objave na internom portalu ili u biltenu?
-- Da li su roditelji dobili svoje fotografije brzo i na bezbedan način, na primer kroz privatne galerije?
+- Da li su roditelji brzo dobili fotografije, na primer kroz online galeriju događaja?
 
 ## Kako predstaviti ideju internom timu i upravi
 

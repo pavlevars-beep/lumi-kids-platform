@@ -39,7 +39,7 @@ export const services = [
   { icon: 'map', title: 'Prostor', text: 'Dolazimo u vaš prostor ili obezbeđujemo i uređujemo lokaciju za događaj.' },
   { icon: 'door', title: 'Prijem i protokol', text: 'Doček, bedževi sa imenom, raspodela po grupama, koordinator koji vodi tok programa.' },
   { icon: 'flask', title: 'Radionice', text: 'Stručni voditelji i sav materijal. Grupe po uzrastu, bez čekanja u redu.' },
-  { icon: 'camera', title: 'Fotografisanje', text: 'Profesionalni fotograf (u saradnji sa Blenda Kids), scenografija i privatne galerije po porodici.' },
+  { icon: 'camera', title: 'Fotografisanje', text: 'Profesionalni fotograf (u saradnji sa Blenda Kids) beleži atmosferu, a fotografije su dostupne u online galeriji događaja.' },
   { icon: 'cup', title: 'Osveženje', text: 'Sokovi, voda i grickalice prilagođeni deci, uz vođenje računa o alergijama.' },
   { icon: 'gift', title: 'Pokloni', text: 'Nabavka i pakovanje poklona, uručenje na zajedničkom finalu — po vašem budžetu.' },
   { icon: 'sparkle', title: 'Dekoracija i animacija', text: 'Tematska dekoracija, Deda Mraz ili maskota, muzika i zajedničko finale.' },
@@ -99,10 +99,10 @@ export const faq = [
   },
   {
     q: 'Kako roditelji dobijaju fotografije?',
-    a: 'Preporučujemo privatnu galeriju po detetu: svaki roditelj na imejl dobija link samo sa fotografijama svog deteta. Moguća je i zbirna galerija za kompaniju, kao i štampane fotografije, kalendari i kartice.',
+    a: 'Posle događaja fotografije su dostupne u online galeriji, a link šaljemo kompaniji koja ga prosleđuje zaposlenima. Fotografišemo atmosferu i aktivnosti tokom programa (reportažno), uz poštovanje saglasnosti roditelja.',
   },
   {
     q: 'Šta nam je potrebno od vas?',
-    a: 'Datum i satnica, broj dece po uzrastu (7 dana pre događaja), kontakt osoba na dan događaja i, ako želite privatne galerije, spisak dece sa imejlom jednog roditelja. Sve ostalo je na nama.',
+    a: 'Datum i satnica, broj dece po uzrastu (7 dana pre događaja), kontakt osoba na dan događaja i potpisane saglasnosti za fotografisanje (formular šaljemo mi). Sve ostalo je na nama.',
   },
 ];

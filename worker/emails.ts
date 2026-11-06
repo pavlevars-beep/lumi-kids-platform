@@ -38,7 +38,7 @@ export const templates: Template[] = [
         'stručne voditelje radionica (nauka, muzika, ples, robotika, govor…) i sav materijal',
         'posebne senzorne i muzičke radionice za bebe i decu do 4 godine, uz roditelja',
         'prijem, bedževe, koordinatora i zajedničko finale',
-        'profesionalno fotografisanje i privatnu galeriju za svaku porodicu',
+        'profesionalno fotografisanje događaja i online galeriju sa fotografijama',
         'osveženje, poklone i dekoraciju — po vašem budžetu',
       ] },
       { boxes: [
@@ -59,7 +59,7 @@ export const templates: Template[] = [
     label: 'Novogodišnji program — firma',
     audience: 'firma',
     subject: 'Novogodišnji program za decu zaposlenih — slobodni termini za decembar',
-    preheader: 'Naučna radionica, fotografisanje sa Deda Mrazom, pokloni i galerija za svaku porodicu.',
+    preheader: 'Naučna radionica, Deda Mraz, pokloni i fotografije sa događaja u online galeriji.',
     blocks: [
       { p: '{pozdrav}' },
       { p: 'Decembar je za mnoge kompanije vreme kada se zaposlenima i njihovoj deci kaže hvala. Mi preuzimamo kompletnu organizaciju novogodišnjeg programa — vaš tim samo potvrdi datum i broj dece.' },
@@ -72,7 +72,7 @@ export const templates: Template[] = [
         ['1:45', 'Finale: Deda Mraz deli poklone, grupna fotografija'],
       ] },
       { photos: [['voditeljka', 'Voditelji za svaku grupu'], ['najmladji', 'Program i za najmlađe']] },
-      { p: 'Svaka porodica dobija <b>privatnu online galeriju</b> sa fotografijama svog deteta u roku od 5 radnih dana — bez posla za HR. Nudimo tri paketa (Start, Standard, Premium): za ~35 dece paketi počinju od 145.000 RSD, a za veći broj dece organizujemo više grupa ili termina.' },
+      { p: 'Fotograf beleži ceo program, a fotografije su <b>dostupne u online galeriji</b> u roku od 5 radnih dana — link šaljemo vama, a vi ga prosleđujete zaposlenima. Nudimo tri paketa (Start, Standard, Premium): za ~35 dece paketi počinju od 145.000 RSD, a za veći broj dece organizujemo više grupa ili termina.' },
       { cta: ['Pošaljite upit za decembar', '{site}/?utm_source=email&utm_campaign=novogodisnji#upit'] },
       { p: 'Termini za decembar se brzo popunjavaju — ako vam odgovara, javite okvirni datum i broj dece pa šaljemo predlog u roku od 48 sati.' },
     ],

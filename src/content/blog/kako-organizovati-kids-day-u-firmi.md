@@ -121,7 +121,7 @@ Fotografije sa Kids Day-a su vredne za internu komunikaciju i employer branding,
 - saglasnost za fotografisanje tražite u formularu za prijavu, a ne na samom događaju;
 - razdvojite saglasnost za interno korišćenje od saglasnosti za javnu objavu;
 - dogovorite znak raspoznavanja (na primer nalepnicu na bedžu) za decu koja ne smeju biti fotografisana;
-- fotografije delite porodicama kroz privatne galerije, a ne kroz javne linkove.
+- fotografije delite zaposlenima kroz online galeriju događaja (link šalje HR), a ne kroz javne objave bez saglasnosti.
 
 ## Komunikacija ka zaposlenima
 

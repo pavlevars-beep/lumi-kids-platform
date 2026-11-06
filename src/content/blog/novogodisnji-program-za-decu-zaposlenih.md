@@ -13,9 +13,9 @@ faq:
   - q: "Koliko traje novogodišnji program za decu?"
     a: "Za većinu firmi optimalno je oko 120 minuta. To je dovoljno za doček, radionicu, fotografisanje sa Deda Mrazom i finale sa poklonima, a da deca ne budu umorna."
   - q: "Kako organizovati fotografisanje sa Deda Mrazom bez dugog čekanja?"
-    a: "Decu treba podeliti u grupe, tako da jedna grupa bude na radionici dok se druga fotografiše. Tako niko ne stoji u redu, a fotograf ima dovoljno vremena za svaku porodicu."
+    a: "Decu treba podeliti u grupe, tako da jedna grupa bude na radionici dok se druga fotografiše. Tako niko ne stoji u redu, a fotograf ima dovoljno vremena za svaku grupu."
   - q: "Kako se fotografije dele roditeljima?"
-    a: "Najbezbednije je kroz privatne galerije po porodici, gde svaki roditelj dobija link samo do fotografija svog deteta. Tako se poštuje privatnost i niko ne mora da pretražuje stotine tuđih slika."
+    a: "Najjednostavnije je kroz online galeriju događaja: izvođač pošalje link firmi, a HR ga prosledi zaposlenima. Važno je da se objavljuju samo fotografije dece za koju postoji saglasnost roditelja."
   - q: "Da li paketiće obezbeđuje firma ili izvođač?"
     a: "Moguće je oboje. Važno je unapred dogovoriti ko nabavlja paketiće, kako se obeležavaju po imenu i uzrastu i ko ih predaje Deda Mrazu pre finala."
 ---
@@ -75,17 +75,16 @@ Zašto ova struktura funkcioniše:
 
 Ako je dece manje, program može biti u jednoj grupi. Ako je više, dodaje se treća grupa ili još jedna paralelna stanica.
 
-## Privatne galerije po porodici
+## Fotografije posle događaja
 
-Posle događaja roditelji žele svoje fotografije, i to brzo. Najčešći problem je jedan zajednički folder sa stotinama fotografija koji svi mogu da vide.
+Posle događaja roditelji žele fotografije, i to brzo. Dogovorite unapred kako će biti podeljene:
 
-Bolje rešenje su privatne galerije po porodici:
+- fotograf beleži atmosferu i aktivnosti tokom celog programa;
+- izbor obrađenih fotografija dostupan je u online galeriji događaja, a link firma prosleđuje zaposlenima;
+- fotografije dece bez saglasnosti roditelja se ne objavljuju;
+- HR dobija i izbor fotografija za internu komunikaciju, samo onih za koje postoji saglasnost.
 
-- svaka porodica dobija link samo do fotografija svog deteta;
-- fotografije dece bez saglasnosti za fotografisanje se ne objavljuju;
-- HR dobija odvojen izbor fotografija za internu komunikaciju, samo onih za koje postoji saglasnost.
-
-Saglasnost za fotografisanje prikupite kroz formular za prijavu. U formularu odvojite saglasnost za privatnu galeriju od saglasnosti za korišćenje u internoj ili javnoj komunikaciji.
+Saglasnost za fotografisanje prikupite kroz formular za prijavu i jasno navedite gde će se fotografije koristiti.
 
 ## Kada rezervisati termin
 
@@ -110,7 +109,7 @@ Ponuda novogodišnjih programa je velika, ali kvalitet se dosta razlikuje. Pitan
 1. **Koliko dece po voditelju?** Grupe od 12 do 16 dece po voditelju su upravljive, uz još jednu odraslu osobu.
 2. **Kako je program prilagođen uzrastu?** Jednogodišnjak i desetogodišnjak ne mogu raditi istu radionicu.
 3. **Šta dete nosi kući?** Rad koji je samo napravilo vredi više od još jednog balona.
-4. **Kako rešavate fotografisanje i privatnost?** Pitajte za privatne galerije i rokove isporuke.
+4. **Kako rešavate fotografisanje i privatnost?** Pitajte kako se dele fotografije i za rokove isporuke.
 5. **Šta je uključeno u ponudu?** Materijal, kostim, dekoracija, fotograf, koordinacija.
 6. **Da li dolazite u naš prostor ili obezbeđujete svoj?** Fleksibilnost olakšava planiranje.
 7. **Ko je kontakt osoba na dan događaja?** Jedna osoba koja koordinira sve.
@@ -136,7 +135,7 @@ Kada je dece više uzrasta, podelu u grupe A i B iz satnice napravite upravo po 
 - [ ] Paketići nabavljeni i obeleženi imenima
 - [ ] Satnica potvrđena sa izvođačem
 - [ ] Užina i voda za decu
-- [ ] Plan za fotografisanje i privatne galerije
+- [ ] Plan za fotografisanje i deljenje galerije
 - [ ] Podsetnik roditeljima
 
 ## Česte greške u decembru
@@ -151,4 +150,4 @@ Za opšti okvir organizacije pogledajte i vodič [Kako organizovati Kids Day u f
 
 ## Kako Lumi Kids može da pomogne
 
-Lumi Kids Studio organizuje novogodišnje programe za decu zaposlenih "ključ u ruke": doček, radionicu, Deda Mraza, fotografisanje i privatne galerije po porodici, u vašem prostoru ili u prostoru koji mi obezbedimo. Radimo sa firmama u Kragujevcu, Beogradu i Novom Sadu. Pogledajte naše [radionice](/radionice) i pošaljite [upit](/#upit) na vreme, dok decembarski termini još nisu popunjeni.
+Lumi Kids Studio organizuje novogodišnje programe za decu zaposlenih "ključ u ruke": doček, radionicu, Deda Mraza, fotografisanje i online galeriju sa fotografijama, u vašem prostoru ili u prostoru koji mi obezbedimo. Radimo sa firmama u Kragujevcu, Beogradu i Novom Sadu. Pogledajte naše [radionice](/radionice) i pošaljite [upit](/#upit) na vreme, dok decembarski termini još nisu popunjeni.
