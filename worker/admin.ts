@@ -23,10 +23,15 @@ type Lead = {
   website: string | null; employees: string | null; contact_name: string | null; contact_role: string | null;
   email: string | null; phone: string | null; source: string; status: string; value_rsd: number | null;
   next_action_at: string | null; notes: string | null; marketing_consent: number; inquiry_id: number | null;
+  priority: string | null; score: number; region: string | null; sector: string | null; channel: string | null;
+  program: string | null; package: string | null; reason: string | null; evidence_url: string | null;
+  linkedin: string | null; contact_url: string | null; score_why: string | null;
 };
 type Activity = { id: number; created_at: string; kind: string; subject: string | null; body: string | null; meta: string | null };
 
-const LEAD_FIELDS = ['company', 'segment', 'city', 'website', 'employees', 'contact_name', 'contact_role', 'email', 'phone', 'source', 'status', 'value_rsd', 'next_action_at', 'notes', 'marketing_consent'] as const;
+const LEAD_FIELDS = ['company', 'segment', 'city', 'website', 'employees', 'contact_name', 'contact_role', 'email', 'phone', 'source', 'status', 'value_rsd', 'next_action_at', 'notes', 'marketing_consent', 'priority', 'channel', 'program', 'package', 'reason', 'linkedin', 'contact_url'] as const;
+const PRIORITY_COLORS: Record<string, string> = { A: '#5c8f22', B: '#0288d1', C: '#9aa7b4', X: '#d92d20' };
+const prio = (p?: string | null) => (p ? `<span class="pill" style="background:${PRIORITY_COLORS[p] || '#9aa7b4'}">${esc(p)}</span>` : '');
 
 // ---------- HTML ----------
 
@@ -131,23 +136,33 @@ async function list(url: URL, env: Env, flash?: string, err?: string) {
   const status = url.searchParams.get('status') || '';
   const segment = url.searchParams.get('segment') || '';
   const q = url.searchParams.get('q') || '';
+  const priority = url.searchParams.get('priority') || '';
+  const region = url.searchParams.get('region') || '';
+  const sort = url.searchParams.get('sort') || 'skor';
   const where: string[] = [];
   const binds: unknown[] = [];
   if (status) { where.push('status = ?'); binds.push(status); } else where.push("status NOT IN ('izgubljeno')");
   if (segment) { where.push('segment = ?'); binds.push(segment); }
-  if (q) { where.push('(company LIKE ? OR contact_name LIKE ? OR email LIKE ? OR city LIKE ? OR notes LIKE ?)'); binds.push(...Array(5).fill(`%${q}%`)); }
+  if (priority) { where.push('priority = ?'); binds.push(priority); }
+  if (region) { where.push('region = ?'); binds.push(region); }
+  if (q) { where.push('(company LIKE ? OR contact_name LIKE ? OR email LIKE ? OR city LIKE ? OR notes LIKE ? OR sector LIKE ? OR reason LIKE ?)'); binds.push(...Array(7).fill(`%${q}%`)); }
   const sql = `SELECT * FROM leads ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
-    ORDER BY CASE status WHEN 'novo' THEN 0 ELSE 1 END, CASE WHEN next_action_at IS NULL OR next_action_at = '' THEN 1 ELSE 0 END, next_action_at, updated_at DESC LIMIT 500`;
-  const [{ results: leads }, { results: counts }] = await Promise.all([
+    ORDER BY CASE status WHEN 'novo' THEN 0 ELSE 1 END, ${sort === 'sledeci'
+      ? "CASE WHEN next_action_at IS NULL OR next_action_at = '' THEN 1 ELSE 0 END, next_action_at, score DESC"
+      : 'score DESC, company'} LIMIT 500`;
+  const [{ results: leads }, { results: counts }, { results: regions }] = await Promise.all([
     env.DB.prepare(sql).bind(...binds).all<Lead>(),
     env.DB.prepare('SELECT status, COUNT(*) AS n, COALESCE(SUM(value_rsd),0) AS v FROM leads GROUP BY status').all<{ status: string; n: number; v: number }>(),
+    env.DB.prepare("SELECT region, COUNT(*) AS n FROM leads WHERE region IS NOT NULL AND region <> '' GROUP BY region ORDER BY n DESC").all<{ region: string; n: number }>(),
   ]);
   const cnt = Object.fromEntries(counts.map((c) => [c.status, c]));
   const qs = (s: string) => `/admin?status=${s}${segment ? `&segment=${segment}` : ''}`;
   const pipe = STATUSES.map((s) => `<a href="${qs(s.key)}" class="${status === s.key ? 'on' : ''}" style="border-top:4px solid ${s.color}"><b>${cnt[s.key]?.n || 0}</b><span class="muted">${s.label}${cnt[s.key]?.v ? ` · ${Number(cnt[s.key].v).toLocaleString('sr-RS')} RSD` : ''}</span></a>`).join('');
   const t = today();
-  const rows = leads.map((l) => `<tr>
-    <td><a href="/admin/leads/${l.id}"><b>${esc(l.company)}</b></a><div class="muted">${esc(SEGMENTS[l.segment] || l.segment)}${l.city ? ' · ' + esc(l.city) : ''}${l.source === 'sajt' ? ' · <span class="tag">sa sajta</span>' : ''}</div></td>
+  const rows = leads.map((l, i) => `<tr>
+    <td class="muted">${i + 1}</td>
+    <td><b style="font-size:1.05rem">${l.score || 0}</b> ${prio(l.priority)}</td>
+    <td><a href="/admin/leads/${l.id}"><b>${esc(l.company)}</b></a><div class="muted">${esc(l.sector || SEGMENTS[l.segment] || l.segment)}${l.city ? ' · ' + esc(l.city) : ''}${l.employees ? ' · ' + esc(l.employees) : ''}${l.source === 'sajt' ? ' · <span class="tag">sa sajta</span>' : ''}</div>${l.score_why ? `<div class="muted" style="font-size:.8rem;max-width:520px">${esc(l.score_why)}</div>` : ''}</td>
     <td>${esc(l.contact_name || '')}${l.contact_role ? `<div class="muted">${esc(l.contact_role)}</div>` : ''}</td>
     <td>${l.email ? `<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>` : '<span class="muted">—</span>'}${l.phone ? `<div class="muted">${esc(l.phone)}</div>` : ''}</td>
     <td>${pill(l.status)}</td>
@@ -157,9 +172,12 @@ async function list(url: URL, env: Env, flash?: string, err?: string) {
     <form class="inline" method="get"><input type="hidden" name="status" value="${esc(status)}">
     <label><span>Pretraga</span><input name="q" value="${esc(q)}" placeholder="firma, ime, grad…"></label>
     <label><span>Segment</span><select name="segment"><option value="">Svi</option>${options(Object.entries(SEGMENTS), segment)}</select></label>
+    <label><span>Prioritet</span><select name="priority"><option value="">Svi</option>${options([['A', 'A — dokazana praksa / topla veza'], ['B', 'B — veliki / family-friendly'], ['C', 'C — moguće'], ['X', 'X — ugašeno']], priority)}</select></label>
+    <label><span>Region</span><select name="region"><option value="">Svi</option>${options(regions.map((r) => [r.region, `${r.region} (${r.n})`]), region)}</select></label>
+    <label><span>Redosled</span><select name="sort">${options([['skor', 'Po skoru (najverovatniji prvi)'], ['sledeci', 'Po datumu sledećeg koraka']], sort)}</select></label>
     <button class="btn ghost">Filtriraj</button><a class="btn" href="/admin/leads/new">+ Novi lead</a></form>
-    <table><thead><tr><th>Organizacija</th><th>Kontakt osoba</th><th>Kontakt</th><th>Status</th><th>Sledeći korak</th><th>Vrednost</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan="6" class="muted">Nema leadova za ovaj filter.</td></tr>'}</tbody></table>`, { flash, err });
+    <table><thead><tr><th>#</th><th>Skor</th><th>Organizacija</th><th>Kontakt osoba</th><th>Kontakt</th><th>Status</th><th>Sledeći korak</th><th>Vrednost</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="8" class="muted">Nema leadova za ovaj filter.</td></tr>'}</tbody></table>`, { flash, err });
 }
 
 function leadFields(l: Partial<Lead> | null) {
@@ -177,6 +195,13 @@ function leadFields(l: Partial<Lead> | null) {
   <div class="row3"><label><span>Status</span><select name="status">${options(STATUSES.map((s) => [s.key, s.label]), l?.status || 'za_kontakt')}</select></label>
   <label><span>Sledeći korak (datum)</span><input type="date" name="next_action_at" value="${v('next_action_at')}"></label>
   <label><span>Vrednost ponude (RSD)</span><input type="number" name="value_rsd" value="${v('value_rsd')}"></label></div>
+  <div class="row3"><label><span>Prioritet</span><select name="priority">${options([['', '—'], ['A', 'A'], ['B', 'B'], ['C', 'C'], ['X', 'X (ugašeno)']], l?.priority || '')}</select></label>
+  <label><span>Kanal pristupa</span><input name="channel" value="${v('channel')}" placeholder="HR, sindikat, uprava…"></label>
+  <label><span>Predloženi paket</span><input name="package" value="${v('package')}"></label></div>
+  <label><span>Predloženi program</span><input name="program" value="${v('program')}"></label>
+  <label><span>Zašto je lead (argument za razgovor)</span><textarea name="reason" style="min-height:60px">${v('reason')}</textarea></label>
+  <div class="row"><label><span>LinkedIn firme</span><input name="linkedin" value="${v('linkedin')}"></label>
+  <label><span>Kontakt forma (URL)</span><input name="contact_url" value="${v('contact_url')}"></label></div>
   <label><span>Beleške</span><textarea name="notes">${v('notes')}</textarea></label>
   <label class="check"><input type="checkbox" name="marketing_consent" value="1"${l?.marketing_consent ? ' checked' : ''}> Dao/la saglasnost za novosti i kampanje</label>`;
 }
@@ -184,7 +209,7 @@ function leadFields(l: Partial<Lead> | null) {
 function readLead(fd: FormData) {
   const out: Record<string, unknown> = {};
   for (const f of LEAD_FIELDS) {
-    const raw = clean(fd.get(f), f === 'notes' ? 5000 : 200);
+    const raw = clean(fd.get(f), f === 'notes' || f === 'reason' ? 5000 : 300);
     if (f === 'value_rsd') out[f] = raw ? Number(raw.replace(/\D/g, '')) || null : null;
     else if (f === 'marketing_consent') out[f] = fd.get(f) ? 1 : 0;
     else out[f] = raw || null;
@@ -226,6 +251,17 @@ async function leadDetail(id: number, env: Env, flash?: string, err?: string) {
     <div class="card"><h2>Podaci</h2><form method="post" action="/admin/leads/${id}">${leadFields(lead)}<div class="actions"><button class="btn">Sačuvaj izmene</button><span class="muted">Dodat ${esc(fmtDate(lead.created_at))}</span></div></form>
       <form method="post" action="/admin/leads/${id}/delete" onsubmit="return confirm('Obrisati lead i celu istoriju?')" style="margin-top:14px"><button class="btn ghost sm">Obriši lead</button></form></div>
     <div class="grid" style="align-content:start">
+      <div class="card" style="border-left:4px solid ${PRIORITY_COLORS[lead.priority || ''] || 'var(--line)'}"><h2>Zašto ih zovemo ${prio(lead.priority)} <span class="muted">skor ${lead.score || 0}</span></h2>
+        ${lead.reason ? `<p style="margin:0 0 8px">${esc(lead.reason)}</p>` : ''}
+        ${lead.score_why ? `<p class="muted" style="margin:0 0 8px">${esc(lead.score_why)}</p>` : ''}
+        <div class="actions">${[
+          lead.evidence_url && `<a class="btn ghost sm" target="_blank" rel="noopener" href="${esc(lead.evidence_url)}">Dokaz / izvor</a>`,
+          lead.linkedin && /^https?:/.test(lead.linkedin) && `<a class="btn ghost sm" target="_blank" rel="noopener" href="${esc(lead.linkedin)}">LinkedIn → nađi HR</a>`,
+          lead.contact_url && /^https?:/.test(lead.contact_url) && `<a class="btn ghost sm" target="_blank" rel="noopener" href="${esc(lead.contact_url)}">Kontakt forma</a>`,
+          lead.website && `<a class="btn ghost sm" target="_blank" rel="noopener" href="${esc(/^https?:/.test(lead.website) ? lead.website : 'https://' + lead.website)}">Sajt</a>`,
+        ].filter(Boolean).join('')}</div>
+        ${lead.channel || lead.program ? `<p class="muted" style="margin:10px 0 0">${lead.channel ? `Kanal: <b>${esc(lead.channel)}</b>` : ''}${lead.program ? ` · Program: <b>${esc(lead.program)}</b>` : ''}${lead.package ? ` · Paket: <b>${esc(lead.package)}</b>` : ''}</p>` : ''}
+      </div>
       <div class="card"><h2>Pošalji mejl</h2>${canSend ? `
         <form method="post" action="/admin/leads/${id}/email">
           <label><span>Šablon</span><select name="template" id="tpl">${tplOpts}</select></label>
@@ -322,7 +358,7 @@ async function previewTemplate(key: string, url: URL, env: Env) {
 
 // ---------- uvoz / izvoz ----------
 
-const CSV_COLS = ['firma', 'segment', 'grad', 'kontakt', 'funkcija', 'email', 'telefon', 'sajt', 'zaposleni', 'napomena'];
+const CSV_COLS = ['firma', 'segment', 'grad', 'kontakt', 'funkcija', 'email', 'telefon', 'sajt', 'zaposleni', 'napomena', 'prioritet', 'skor', 'region', 'sektor', 'kanal', 'program', 'paket', 'zasto', 'dokaz', 'linkedin', 'kontakt_forma', 'skor_obrazlozenje'];
 
 function importForm(flash?: string, err?: string) {
   return page('Uvoz liste', `<h1>Uvoz liste firmi</h1><div class="card" style="max-width:900px">
@@ -369,9 +405,13 @@ async function importCsv(req: Request, env: Env) {
     if (!company || names.has(company.toLowerCase()) || (email && emails.has(email))) { skipped++; continue; }
     names.add(company.toLowerCase()); if (email) emails.add(email);
     const seg = SEGMENTS[g('segment')] ? g('segment') : 'firma';
-    stmts.push(env.DB.prepare(`INSERT INTO leads (company, segment, city, contact_name, contact_role, email, phone, website, employees, notes, source, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'rucno', 'za_kontakt')`)
-      .bind(company, seg, g('grad') || null, g('kontakt') || null, g('funkcija') || null, email || null, g('telefon') || null, g('sajt') || null, g('zaposleni') || null, g('napomena') || null));
+    const pr = g('prioritet').toUpperCase();
+    stmts.push(env.DB.prepare(`INSERT INTO leads (company, segment, city, contact_name, contact_role, email, phone, website, employees, notes, source, status,
+        priority, score, region, sector, channel, program, package, reason, evidence_url, linkedin, contact_url, score_why)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'rucno', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .bind(company, seg, g('grad') || null, g('kontakt') || null, g('funkcija') || null, email || null, g('telefon') || null, g('sajt') || null, g('zaposleni') || null, g('napomena') || null,
+        pr === 'X' ? 'izgubljeno' : 'za_kontakt', pr || null, Number(g('skor')) || 0, g('region') || null, g('sektor') || null, g('kanal') || null, g('program') || null, g('paket') || null,
+        g('zasto') || null, g('dokaz') || null, g('linkedin') || null, g('kontakt_forma') || null, g('skor_obrazlozenje') || null));
   }
   for (let i = 0; i < stmts.length; i += 50) await env.DB.batch(stmts.slice(i, i + 50));
   return redirect(`/admin?ok=${encodeURIComponent(`Uvezeno ${stmts.length} leadova${skipped ? `, preskočeno ${skipped} (duplikati/prazni)` : ''}.`)}`);

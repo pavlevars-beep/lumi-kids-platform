@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { initials } from '../../data/authors';
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const fmt = (d: Date) => d.toLocaleDateString('sr-Latn-RS', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Blog — saveti za dečje programe, Kids Day i radionice" description="Saveti za HR timove, vrtiće i roditelje: kako organizovati Kids Day, novogodišnji program za decu zaposlenih i edukativne radionice za decu.">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Blog</span>
+        <h1>Saveti za programe koji deci ostaju u sećanju</h1>
+        <p>Praktični vodiči za HR timove, vrtiće i roditelje — od planiranja Kids Day-a do izbora radionica po uzrastu.</p>
+      </div>
+      <div class="posts">
+        {posts.map((p, i) => (
+          <a href={`/blog/${p.id}`} class={`post${i === 0 ? ' post--lead' : ''}`}>
+            {p.data.image && <img src={p.data.image} alt="" loading={i < 2 ? 'eager' : 'lazy'} />}
+            <div class="post__body">
+              <span class="chip">{p.data.category}</span>
+              <h2>{p.data.title}</h2>
+              <p>{p.data.description}</p>
+              <div class="post__meta"><span class="av">{initials(p.data.author)}</span>{p.data.author} · {fmt(p.data.date)}{p.data.readingTime && ` · ${p.data.readingTime} min`}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 20px; }
+  .post { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: inherit; transition: transform .2s, box-shadow .2s; }
+  .post:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .post img { width: 100%; height: 210px; object-fit: cover; }
+  .post__body { padding: 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .post h2 { font-size: 1.25rem; margin: 4px 0 0; }
+  .post p { color: var(--ink-2); margin: 0; flex: 1; }
+  .post .chip { align-self: flex-start; background: var(--tint-blue); color: var(--brand-deep); }
+  .post__meta { display: flex; align-items: center; gap: 8px; font-size: .88rem; color: var(--ink-3); font-weight: 700; margin-top: 8px; }
+  .av { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--brand); color: #fff; font-size: .75rem; font-weight: 900; }
+  .post--lead { grid-column: 1 / -1; flex-direction: row; }
+  .post--lead img { width: 52%; height: auto; min-height: 320px; }
+  .post--lead h2 { font-size: 1.7rem; }
+  @media (max-width: 800px) { .post--lead { flex-direction: column; } .post--lead img { width: 100%; min-height: 0; height: 220px; } }
+</style>

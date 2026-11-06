@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
 interface Props { title?: string; description?: string; image?: string }
-const { title, description = site.description, image = '/galerija/deca-studio.jpg' } = Astro.props;
+const { title, description = site.description, image = '/galerija/zajednicko-stvaranje.jpg' } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
@@ -41,6 +41,8 @@ const ogImage = new URL(image, Astro.site);
       ...(site.phone ? { telephone: site.phone } : {}),
       ...(site.email ? { email: site.email } : {}),
     })} />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <slot name="head" />
   </head>
   <body>
     <Header />

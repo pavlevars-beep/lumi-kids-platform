@@ -13,6 +13,7 @@ export type Workshop = {
   groupSize: string;
   color: 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy';
   icon: string;
+  image?: string;
 };
 
 export const workshops: Workshop[] = [
@@ -55,6 +56,7 @@ export const workshops: Workshop[] = [
     groupSize: '12–16 dece',
     color: 'green',
     icon: 'flask',
+    image: '/galerija/mala-naucnica.jpg',
   },
   {
     slug: 'citanjac',

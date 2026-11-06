@@ -10,9 +10,10 @@ type Block =
   | { h: string }
   | { timeline: [string, string][] }
   | { cta: [string, string] }
-  | { boxes: { title: string; text: string }[] };
+  | { boxes: { title: string; text: string }[] }
+  | { photos: [string, string][] };
 
-type Template = { key: string; label: string; audience: string; subject: string; preheader: string; blocks: Block[] };
+type Template = { key: string; label: string; audience: string; subject: string; preheader: string; hero: string; heroAlt: string; blocks: Block[] };
 
 const BRAND = {
   ink: '#0f2a44', ink2: '#3d5368', ink3: '#6b7d8f', brand: '#0277bd', deep: '#0b3a66',
@@ -22,6 +23,8 @@ const BRAND = {
 export const templates: Template[] = [
   {
     key: 'prvi-kontakt',
+    hero: 'prvi-kontakt',
+    heroAlt: 'Roditelji i deca zajedno na Lumi Kids radionici',
     label: 'Prvi kontakt — firma (HR)',
     audience: 'firma',
     subject: 'Program za decu zaposlenih — {firma}',
@@ -42,6 +45,7 @@ export const templates: Template[] = [
         { title: '2 grupe', text: 'po uzrastu, bez čekanja u redu' },
         { title: '48 h', text: 'do predloga programa i ponude' },
       ] },
+      { photos: [['radionica', 'Deca sama izvode oglede'], ['osvezenje', 'Osveženje i detalji']] },
       { p: 'Ako u narednim mesecima planirate događaj za zaposlene i njihovu decu, rado ćemo vam poslati predlog programa sa satnicom i ponudom u paketima — bez obaveze.' },
       { cta: ['Pogledajte šta sve uključujemo', '{site}/?utm_source=email&utm_campaign=prvi-kontakt#usluge'] },
       { p: 'Da li biste imali 10 minuta za kratak razgovor sledeće nedelje?' },
@@ -49,6 +53,8 @@ export const templates: Template[] = [
   },
   {
     key: 'novogodisnji',
+    hero: 'novogodisnji',
+    heroAlt: 'Deca i roditelji na radionici u Lumi Kids studiju',
     label: 'Novogodišnji program — firma',
     audience: 'firma',
     subject: 'Novogodišnji program za decu zaposlenih — slobodni termini za decembar',
@@ -64,13 +70,16 @@ export const templates: Template[] = [
         ['1:05', 'Grupe se menjaju'],
         ['1:45', 'Finale: Deda Mraz deli poklone, grupna fotografija'],
       ] },
-      { p: 'Svaka porodica dobija <b>privatnu online galeriju</b> sa fotografijama svog deteta u roku od 5 radnih dana — bez posla za HR. Nudimo tri paketa (Start, Standard, Premium), a program prilagođavamo vašem prostoru, broju dece i budžetu.' },
+      { photos: [['voditeljka', 'Voditelji za svaku grupu'], ['najmladji', 'Program i za najmlađe']] },
+      { p: 'Svaka porodica dobija <b>privatnu online galeriju</b> sa fotografijama svog deteta u roku od 5 radnih dana — bez posla za HR. Nudimo tri paketa (Start, Standard, Premium): za ~35 dece paketi počinju od 145.000 RSD, a za veći broj dece organizujemo više grupa ili termina.' },
       { cta: ['Pošaljite upit za decembar', '{site}/?utm_source=email&utm_campaign=novogodisnji#upit'] },
       { p: 'Termini za decembar se brzo popunjavaju — ako vam odgovara, javite okvirni datum i broj dece pa šaljemo predlog u roku od 48 sati.' },
     ],
   },
   {
     key: 'vrtic',
+    hero: 'vrtic',
+    heroAlt: 'Grupa dece na radionici za stolom',
     label: 'Prvi kontakt — vrtić / škola',
     audience: 'vrtic',
     subject: 'Radionice za vaše grupe — Lumi Kids Studio',
@@ -90,6 +99,8 @@ export const templates: Template[] = [
   },
   {
     key: 'podsetnik',
+    hero: 'podsetnik',
+    heroAlt: 'Tata i deca stvaraju zajedno',
     label: 'Podsetnik (follow-up)',
     audience: 'sve',
     subject: 'Re: program za decu — {firma}',
@@ -103,6 +114,8 @@ export const templates: Template[] = [
   },
   {
     key: 'hvala',
+    hero: 'hvala',
+    heroAlt: 'Pun studio dece i roditelja',
     label: 'Zahvalnica posle događaja',
     audience: 'sve',
     subject: 'Hvala na saradnji — {firma}',
@@ -118,6 +131,8 @@ export const templates: Template[] = [
 
 export const confirmationTemplate: Template = {
   key: 'potvrda-upita',
+  hero: 'potvrda',
+  heroAlt: 'Devojčica izvodi ogled na radionici',
   label: 'Automatska potvrda upita',
   audience: 'sve',
   subject: 'Primili smo vaš upit — Lumi Kids Studio',
@@ -166,6 +181,10 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
         return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px"><tr>${b.boxes
           .map((x) => `<td width="${Math.floor(100 / b.boxes.length)}%" style="padding:0 4px"><div style="background:${B.tint};border-radius:12px;padding:14px 10px;text-align:center"><div style="font-size:20px;font-weight:800;color:${B.deep}">${x.title}</div><div style="font-size:13px;color:${B.ink3};margin-top:4px">${x.text}</div></div></td>`)
           .join('')}</tr></table>`;
+      if ('photos' in b)
+        return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px"><tr>${b.photos
+          .map(([img, cap]) => `<td width="50%" valign="top" style="padding:0 4px"><img src="${site}/img/email/${img}.jpg" width="260" alt="${esc(cap)}" style="display:block;width:100%;height:auto;border:0;border-radius:12px"><div style="font-size:13px;color:${B.ink3};margin-top:6px;text-align:center">${esc(cap)}</div></td>`)
+          .join('')}</tr></table>`;
       if ('cta' in b)
         return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:6px 0 22px"><tr><td style="background:${B.brand};border-radius:999px"><a href="${fill(b.cta[1], escVars, site)}" style="display:inline-block;padding:13px 26px;font-size:15px;font-weight:bold;color:#ffffff;text-decoration:none">${b.cta[0]} →</a></td></tr></table>`;
       return '';
@@ -180,8 +199,9 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid ${B.line}">
 <tr><td style="padding:22px 32px 18px"><img src="${site}/img/logo.png" width="150" alt="Lumi Kids Studio" style="display:block;border:0;height:auto"></td></tr>
 <tr><td style="height:5px;line-height:5px;font-size:0;background:linear-gradient(90deg,#ff4b4b,#ff9e3d,#ffd700,#8bc34a,#03a9f4,#0277bd);background-color:#03a9f4">&nbsp;</td></tr>
+<tr><td style="padding:0"><img src="${site}/img/email/${t.hero}.jpg" width="600" alt="${esc(t.heroAlt)}" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>
 <tr><td style="padding:30px 32px 10px">${body}
-<p style="margin:8px 0 0;font-size:15px;line-height:1.6;color:${B.ink2}">Srdačan pozdrav,<br><b style="color:${B.ink}">Tim Lumi Kids Studio</b></p></td></tr>
+<p style="margin:8px 0 0;font-size:15px;line-height:1.6;color:${B.ink2}">Srdačan pozdrav,<br><b style="color:${B.ink}">Tijana Varsaković</b><br>Lumi Kids Studio · <a href="tel:+381693042721" style="color:${B.brand};text-decoration:none">+381 69 304 2721</a></p></td></tr>
 <tr><td style="padding:22px 32px;background:${B.deep};color:#c9dbeb;font-size:13px;line-height:1.6">
 <b style="color:#ffffff">Lumi Kids Studio</b> · dečji programi po porudžbini · Kragujevac i Beograd<br>
 <a href="${site}" style="color:#ffffff">lumikids.rs</a> · <a href="https://www.instagram.com/studiolumikids/" style="color:#ffffff">@studiolumikids</a><br>
@@ -195,10 +215,15 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
       if ('list' in b) return b.list.map((l) => `- ${l}`).join('\n');
       if ('timeline' in b) return b.timeline.map(([a, c]) => `${a}  ${c}`).join('\n');
       if ('boxes' in b) return b.boxes.map((x) => `${x.title} — ${x.text}`).join('\n');
+      if ('photos' in b)
+        return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px"><tr>${b.photos
+          .map(([img, cap]) => `<td width="50%" valign="top" style="padding:0 4px"><img src="${site}/img/email/${img}.jpg" width="260" alt="${esc(cap)}" style="display:block;width:100%;height:auto;border:0;border-radius:12px"><div style="font-size:13px;color:${B.ink3};margin-top:6px;text-align:center">${esc(cap)}</div></td>`)
+          .join('')}</tr></table>`;
       if ('cta' in b) return `${b.cta[0]}: ${fill(b.cta[1], {}, site)}`;
+      if ('photos' in b) return '';
       return '';
     })
-    .join('\n\n') + '\n\nSrdačan pozdrav,\nTim Lumi Kids Studio\nlumikids.rs';
+    .join('\n\n') + '\n\nSrdačan pozdrav,\nTijana Varsaković\nLumi Kids Studio · +381 69 304 2721\nlumikids.rs';
 
   return { subject, html, text };
 }

@@ -34,11 +34,11 @@ const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red'
         </ul>
       </div>
       <div class="hero__media">
-        <img class="hero__img hero__img--a" src="/galerija/deca-studio.jpg" alt="Deca na Lumi Kids radionici" width="933" height="1400" loading="eager" />
-        <img class="hero__img hero__img--b" src="/galerija/radionica-studio.jpg" alt="Prostor Lumi Kids Studija" width="1400" height="933" loading="eager" />
+        <img class="hero__img hero__img--a" src="/galerija/mala-naucnica.jpg" alt="Devojčica izvodi ogled na radionici Mali naučnici" width="1067" height="1600" loading="eager" />
+        <img class="hero__img hero__img--b" src="/galerija/zajednicko-stvaranje.jpg" alt="Tata i deca zajedno stvaraju na Lumi Kids radionici" width="1600" height="1067" loading="eager" />
         <div class="hero__badge card">
-          <strong>9 tipova radionica</strong>
-          <span>nauka, muzika, ples, robotika, govor…</span>
+          <strong>Deca + roditelji</strong>
+          <span>radionice koje porodice rade zajedno</span>
         </div>
       </div>
     </div>
@@ -54,6 +54,7 @@ const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red'
       </div>
       <div class="aud">
         <article class="aud__featured">
+          <img class="aud__photo" src="/galerija/roditelji-i-deca-u-studiju.jpg" alt="Roditelji i deca na zajedničkoj radionici" loading="lazy" width="1600" height="1067" />
           <span class="chip chip--light">Najčešće nas angažuju</span>
           <h3>{featured.title}</h3>
           <p class="aud__lead">{featured.lead}</p>
@@ -99,6 +100,16 @@ const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red'
     </div>
   </section>
 
+  <!-- FOTO TRAKA -->
+  <section class="band" aria-label="Fotografije sa radionica">
+    <div class="band__grid">
+      <figure><img src="/galerija/tata-pomaze-na-radionici.jpg" alt="Otac pomaže deci na radionici" loading="lazy" /><figcaption>Roditelji se uključuju</figcaption></figure>
+      <figure><img src="/galerija/voditeljka-vodi-radionicu.jpg" alt="Voditeljka vodi grupu dece" loading="lazy" /><figcaption>Stručni voditelji</figcaption></figure>
+      <figure><img src="/galerija/mali-naucnici-u-akciji.jpg" alt="Deca izvode ogled sa bojama" loading="lazy" /><figcaption>Deca sama izvode oglede</figcaption></figure>
+      <figure><img src="/galerija/osvezenje-za-decu.jpg" alt="Sto sa osveženjem za decu" loading="lazy" /><figcaption>Osveženje i detalji</figcaption></figure>
+    </div>
+  </section>
+
   <!-- PRIMER PROGRAMA -->
   <section class="section section--alt">
     <div class="wrap sample">
@@ -113,11 +124,14 @@ const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red'
         </ul>
         <p class="sample__note">Isti model prilagođavamo za Kids Day, Dan porodice, Uskrs, 8. mart, Dečju nedelju ili kraj školske godine.</p>
       </div>
+      <div class="sample__right">
+      <img class="sample__photo" src="/galerija/ogled-sa-mlekom.jpg" alt="Grupa dece izvodi ogled za stolom" loading="lazy" />
       <ol class="timeline card">
         {sampleProgram.timeline.map((t) => (
           <li><span class="timeline__t">{t.time}</span><span>{t.text}</span></li>
         ))}
       </ol>
+      </div>
     </div>
   </section>
 
@@ -247,7 +261,16 @@ const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red'
   .hero__badge span { font-size: 0.88rem; color: var(--ink-3); }
 
   .aud { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; }
-  .aud__featured { background: linear-gradient(150deg, var(--brand) 0%, var(--brand-deep) 100%); color: #e5f2fb; border-radius: 24px; padding: 34px; display: flex; flex-direction: column; gap: 6px; }
+  .aud__photo { max-width: none; width: calc(100% + 68px); margin: -34px -34px 14px; height: 210px; object-fit: cover; border-radius: 24px 24px 0 0; }
+  .band { padding: 0 0 clamp(56px, 8vw, 96px); }
+  .band__grid { display: grid; grid-template-columns: 1.3fr 1fr 1.3fr 1fr; gap: 12px; padding: 0 12px; max-width: 1500px; margin: 0 auto; }
+  .band figure { margin: 0; position: relative; border-radius: 20px; overflow: hidden; height: 300px; }
+  .band img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .band figure:hover img { transform: scale(1.04); }
+  .band figcaption { position: absolute; left: 12px; bottom: 12px; background: rgba(15,42,68,.78); color: #fff; font-weight: 700; font-size: .85rem; padding: 6px 12px; border-radius: 999px; }
+  .sample__right { display: grid; gap: 16px; }
+  .sample__photo { width: 100%; height: 240px; object-fit: cover; border-radius: var(--radius); }
+  .aud__featured { overflow: hidden; background: linear-gradient(150deg, var(--brand) 0%, var(--brand-deep) 100%); color: #e5f2fb; border-radius: 24px; padding: 34px; display: flex; flex-direction: column; gap: 6px; }
   .aud__featured h3 { color: #fff; font-size: 1.8rem; margin-top: 12px; }
   .aud__featured .aud__lead { color: #fff; }
   .aud__featured .btn { align-self: flex-start; margin-top: 18px; }
@@ -306,6 +329,8 @@ const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red'
     .hero__media { min-height: 380px; }
     .steps { grid-template-columns: 1fr 1fr; }
     .upit__copy { position: static; }
+    .band__grid { grid-template-columns: 1fr 1fr; }
+    .band figure { height: 220px; }
   }
   @media (max-width: 600px) {
     .aud__list, .steps { grid-template-columns: 1fr; }
