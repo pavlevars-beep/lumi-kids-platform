@@ -24,11 +24,23 @@ npm run db:migrate:local    # jednom: lokalna D1 baza
 npm run preview             # sajt + forma (wrangler dev), http://localhost:8787
 ```
 
+## CMS (/admin)
+
+`https://lumikids.rs/admin` — prijava lozinkom (secret `ADMIN_PASSWORD`).
+
+- **Leadovi** sa statusima: Novi upit → Za kontakt → Kontaktiran → U razgovoru → Ponuda poslata → Potvrđeno / Izgubljeno
+- Svaki upit sa sajta automatski postaje lead (status „Novi upit“) + klijent dobija potvrdu mejlom, a tim obaveštenje (`NOTIFY_EMAIL`)
+- Kartica leada: izmena podataka, beleške/pozivi sa datumom sledećeg koraka, slanje dizajniranih mejlova (Resend) i istorija
+- **Uvoz liste** firmi iz CSV-a, **izvoz** svih leadova u CSV
+- Mejl šabloni su u `worker/emails.ts` (pregled: `/admin/templates`)
+
+Lista firmi i kontakti se čuvaju **samo u D1 bazi**, ne u ovom (javnom) repou.
+
 ## Cloudflare (produkcija)
 
 - Worker: `lumi-kids-studio` — https://lumi-kids-studio.pavlevars.workers.dev
 - D1 baza: `lumi-kids` (`04a8b679-d7ee-4a3e-ba27-c43e0f304df5`), tabela `inquiries`
-- Novi deploy: `npx wrangler login` pa `npm run deploy`
+- Novi deploy: `npx wrangler login` pa `npm run db:migrate` (ako ima novih migracija) i `npm run deploy`
 
 ### Domen lumikids.rs
 

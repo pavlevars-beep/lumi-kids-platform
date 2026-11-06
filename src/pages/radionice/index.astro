@@ -1,15 +1,33 @@
 ---
 import Base from '../../layouts/Base.astro';
 import WorkshopCard from '../../components/WorkshopCard.astro';
+import Icon from '../../components/Icon.astro';
 import { workshops } from '../../data/workshops';
 ---
 <Base title="Radionice" description="Katalog Lumi Kids radionica: nauka, muzika, ples, robotika, čitanje, logoped, defektolog, fotografija i arhitektura. Za firme, vrtiće i rođendane.">
   <section class="section">
     <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow">Katalog radionica</span>
-        <h1>Radionice koje kombinujemo u vaš program</h1>
-        <p>Svaku radionicu prilagođavamo uzrastu, broju dece i povodu. Za veće događaje kombinujemo dve ili više radionica kao paralelne stanice, uz fotografisanje, osveženje i poklone.</p>
+      <div class="intro">
+        <div>
+          <span class="eyebrow">Katalog radionica</span>
+          <h1>Radionice koje kombinujemo u vaš program</h1>
+          <p class="lead">Svaku radionicu prilagođavamo uzrastu, broju dece i povodu. Za veće događaje kombinujemo dve ili više radionica kao paralelne stanice, uz fotografisanje, osveženje i poklone.</p>
+          <ul class="facts">
+            <li><strong>{workshops.length}</strong><span>tipova radionica</span></li>
+            <li><strong>1–12</strong><span>godina uzrast</span></li>
+            <li><strong>45–60</strong><span>minuta po radionici</span></li>
+          </ul>
+          <a href="/#upit" class="btn btn--primary">Pošaljite upit</a>
+        </div>
+        <div class="mosaic" aria-label="Pregled radionica">
+          {workshops.map((w) => (
+            <a href={`/radionice/${w.slug}`} class={`tile c-${w.color}`}>
+              <span class="tile__icon"><Icon name={w.icon} size={26} /></span>
+              <span class="tile__name">{w.name}</span>
+              <span class="tile__area">{w.area}</span>
+            </a>
+          ))}
+        </div>
       </div>
       <div class="grid grid--3">
         {workshops.map((w) => <WorkshopCard w={w} />)}
@@ -26,6 +44,27 @@ import { workshops } from '../../data/workshops';
 </Base>
 
 <style>
+  .intro { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; margin-bottom: 64px; }
+  .lead { font-size: 1.1rem; color: var(--ink-2); }
+  .facts { list-style: none; padding: 0; margin: 26px 0 30px; display: flex; gap: 28px; flex-wrap: wrap; }
+  .facts li { display: grid; }
+  .facts strong { font-size: 1.7rem; font-weight: 900; color: var(--brand-deep); line-height: 1.1; }
+  .facts span { color: var(--ink-3); font-size: 0.9rem; font-weight: 700; }
+  .mosaic { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .tile {
+    display: flex; flex-direction: column; gap: 4px; padding: 16px; min-height: 132px;
+    border-radius: 18px; background: var(--t); color: var(--ink); text-decoration: none;
+    border: 1px solid transparent; transition: transform .2s ease, box-shadow .2s ease, background .2s;
+  }
+  .tile:nth-child(3n+2) { transform: translateY(18px); }
+  .tile:hover { background: #fff; border-color: var(--line); box-shadow: var(--shadow); transform: translateY(-3px); }
+  .tile:nth-child(3n+2):hover { transform: translateY(15px); }
+  .tile__icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: #fff; color: var(--c); margin-bottom: auto; box-shadow: 0 2px 8px rgba(15,42,68,.06); }
+  .tile__name { font-weight: 800; font-size: 1rem; line-height: 1.2; margin-top: 12px; }
+  .tile__area { font-size: 0.78rem; font-weight: 700; color: var(--c); }
+  @media (max-width: 960px) { .intro { grid-template-columns: 1fr; gap: 36px; } }
+  @media (max-width: 480px) { .mosaic { grid-template-columns: repeat(2, 1fr); } .tile:nth-child(3n+2) { transform: none; } .tile { min-height: 116px; } }
+
   .cta { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; background: var(--tint-blue); border-color: transparent; }
   .cta h2 { font-size: 1.5rem; margin-bottom: 6px; }
   .cta p { margin: 0; color: var(--ink-2); }

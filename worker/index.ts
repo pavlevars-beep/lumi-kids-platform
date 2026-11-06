@@ -1,5 +1,7 @@
-// Cloudflare Worker: statički sajt (dist/) + API za upite.
-import { handleInquiry, type Env } from './inquiry';
+// Cloudflare Worker: statički sajt (dist/) + API za upite + CMS (/admin).
+import type { Env } from './lib';
+import { handleInquiry } from './inquiry';
+import { handleAdmin } from './admin';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -14,6 +16,10 @@ export default {
     if (url.pathname === '/api/inquiry') {
       if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: { Allow: 'POST' } });
       return handleInquiry(request, env);
+    }
+
+    if (url.pathname === '/admin' || url.pathname.startsWith('/admin/')) {
+      return handleAdmin(request, env);
     }
 
     return env.ASSETS.fetch(request);

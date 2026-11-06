@@ -1,18 +1,9 @@
 // POST /api/inquiry
-// Čuva upit u D1 (binding DB) i, ako je podešeno, šalje obaveštenje imejlom preko Resend-a.
-
-export interface Env {
-  ASSETS: Fetcher;
-  DB?: D1Database;
-  RESEND_API_KEY?: string;
-  NOTIFY_EMAIL?: string;
-  FROM_EMAIL?: string;
-  TURNSTILE_SECRET?: string;
-}
+// Čuva upit u D1, pravi/ažurira lead u CMS-u, šalje obaveštenje timu i potvrdu klijentu.
+import { type Env, esc, clean, sendEmail, siteUrl } from './lib';
+import { confirmationTemplate, renderTemplate } from './emails';
 
 const MAX = 2000;
-const clean = (v: unknown, max = 200) =>
-  typeof v === 'string' ? v.trim().slice(0, max) : '';
 const list = (fd: FormData, key: string) =>
   fd.getAll(key).map((v) => clean(v, 80)).filter(Boolean).join(', ');
 
@@ -28,9 +19,6 @@ function respond(req: Request, status: number, body: Record<string, unknown>) {
     headers: { 'content-type': 'application/json; charset=utf-8' },
   });
 }
-
-const esc = (s: string) =>
-  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 export async function handleInquiry(request: Request, env: Env): Promise<Response> {
   let fd: FormData;
@@ -85,19 +73,53 @@ export async function handleInquiry(request: Request, env: Env): Promise<Respons
     return respond(request, 400, { ok: false, error: 'Potrebna je saglasnost za kontakt.' });
   }
 
-  let saved = false;
-  if (env.DB) {
-    const cols = Object.keys(data);
-    await env.DB.prepare(
-      `INSERT INTO inquiries (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`,
-    )
-      .bind(...Object.values(data))
-      .run();
-    saved = true;
-  }
+  const segmentMap: Record<string, string> = {
+    'Firma': 'firma', 'Vrtić / škola': 'vrtic', 'Institucija / udruženje': 'institucija',
+    'Rođendaonica / igraonica': 'rodjendaonica', 'Roditelj (rođendan)': 'roditelj',
+  };
 
-  let mailed = false;
-  if (env.RESEND_API_KEY && env.NOTIFY_EMAIL) {
+  const cols = Object.keys(data);
+  const ins = await env.DB.prepare(
+    `INSERT INTO inquiries (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`,
+  )
+    .bind(...Object.values(data))
+    .run();
+  const inquiryId = ins.meta.last_row_id;
+
+  // Lead u CMS-u: postojeći (po imejlu) se vraća u status „novo“, inače se pravi novi.
+  const summary = [
+    data.occasion && `Povod: ${data.occasion}`,
+    data.event_date && `Datum: ${data.event_date}`,
+    data.kids_count && `Broj dece: ${data.kids_count}`,
+    data.age_groups && `Uzrast: ${data.age_groups}`,
+    data.location && `Lokacija: ${data.location}`,
+    data.services && `Usluge: ${data.services}`,
+    data.workshops && `Radionice: ${data.workshops}`,
+    data.budget && `Budžet: ${data.budget}`,
+    data.message && `Poruka: ${data.message}`,
+  ].filter(Boolean).join('\n');
+
+  const existing = await env.DB.prepare('SELECT id FROM leads WHERE lower(email) = lower(?)').bind(data.email).first<{ id: number }>();
+  let leadId: number;
+  if (existing) {
+    leadId = existing.id;
+    await env.DB.prepare(`UPDATE leads SET status = 'novo', inquiry_id = ?, updated_at = datetime('now'),
+      phone = COALESCE(NULLIF(phone, ''), ?), contact_name = COALESCE(NULLIF(contact_name, ''), ?) WHERE id = ?`)
+      .bind(inquiryId, data.phone, data.name, leadId).run();
+  } else {
+    const r = await env.DB.prepare(`INSERT INTO leads (company, segment, city, contact_name, email, phone, source, status, inquiry_id)
+      VALUES (?, ?, ?, ?, ?, ?, 'sajt', 'novo', ?)`)
+      .bind(data.organization || data.name, segmentMap[data.client_type] || 'firma', data.city, data.name, data.email, data.phone, inquiryId)
+      .run();
+    leadId = r.meta.last_row_id;
+  }
+  await env.DB.prepare(`INSERT INTO activities (lead_id, kind, subject, body) VALUES (?, 'upit', ?, ?)`)
+    .bind(leadId, `Upit sa sajta: ${data.client_type}`, summary).run();
+
+  const site = siteUrl(env);
+  const tasks: Promise<unknown>[] = [];
+
+  if (env.NOTIFY_EMAIL) {
     const labels: Record<string, string> = {
       client_type: 'Ko organizuje', occasion: 'Povod', organization: 'Organizacija', name: 'Ime',
       email: 'Imejl', phone: 'Telefon', city: 'Grad', event_date: 'Datum', kids_count: 'Broj dece',
@@ -106,24 +128,27 @@ export async function handleInquiry(request: Request, env: Env): Promise<Respons
     };
     const rows = Object.entries(data)
       .filter(([, v]) => v !== '' && v !== null)
-      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#6b7d8f"><b>${labels[k] ?? k}</b></td><td>${esc(String(v)).replace(/\n/g, '<br>')}</td></tr>`)
+      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#6b7d8f;vertical-align:top"><b>${labels[k] ?? k}</b></td><td>${esc(String(v)).replace(/\n/g, '<br>')}</td></tr>`)
       .join('');
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-      body: JSON.stringify({
-        from: env.FROM_EMAIL || 'Lumi Kids <onboarding@resend.dev>',
-        to: env.NOTIFY_EMAIL.split(',').map((s) => s.trim()),
-        reply_to: data.email,
-        subject: `Novi upit: ${data.client_type}${data.organization ? ` — ${data.organization}` : ''} (${data.name})`,
-        html: `<h2>Novi upit sa sajta</h2><table>${rows}</table>`,
-      }),
-    });
-    mailed = res.ok;
+    tasks.push(sendEmail(env, {
+      to: env.NOTIFY_EMAIL.split(',').map((s) => s.trim()),
+      replyTo: data.email,
+      subject: `Novi upit: ${data.client_type}${data.organization ? ` — ${data.organization}` : ''} (${data.name})`,
+      html: `<div style="font-family:Arial,sans-serif"><h2>Novi upit sa sajta</h2><table>${rows}</table>
+        <p><a href="${site}/admin/leads/${leadId}">Otvori lead u CMS-u →</a></p></div>`,
+      tags: [{ name: 'type', value: 'notify' }],
+    }));
   }
 
-  if (!saved && !mailed) {
-    return respond(request, 503, { ok: false, error: 'Slanje trenutno nije dostupno.' });
-  }
+  const conf = renderTemplate(confirmationTemplate, { ime: data.name.split(' ')[0] }, site);
+  tasks.push(
+    sendEmail(env, { to: data.email, subject: conf.subject, html: conf.html, text: conf.text, tags: [{ name: 'type', value: 'confirmation' }] })
+      .then(async (r) => {
+        if (r.ok) await env.DB.prepare(`INSERT INTO activities (lead_id, kind, subject, meta) VALUES (?, 'mejl', ?, ?)`)
+          .bind(leadId, conf.subject, JSON.stringify({ template: 'potvrda-upita', id: r.id })).run();
+      }),
+  );
+
+  await Promise.allSettled(tasks);
   return respond(request, 200, { ok: true });
 }
