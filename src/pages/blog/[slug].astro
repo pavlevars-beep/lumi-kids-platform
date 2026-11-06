@@ -78,11 +78,12 @@ const ld = [
   .art__grid { display: grid; grid-template-columns: 260px minmax(0, 760px); gap: 48px; padding-top: 40px; padding-bottom: 72px; justify-content: center; }
   .toc { position: sticky; top: 100px; align-self: start; display: grid; gap: 18px; font-size: .92rem; }
   .toc ol { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; } .toc a { color: var(--ink-2); text-decoration: none; } .toc a:hover { color: var(--brand); }
-  .prose { font-size: 1.08rem; line-height: 1.75; }
+  .prose { font-size: 1.08rem; line-height: 1.75; min-width: 0; overflow-wrap: break-word; }
   .prose :global(h2) { font-size: 1.6rem; margin: 2em 0 .6em; scroll-margin-top: 90px; }
   .prose :global(h3) { font-size: 1.22rem; margin: 1.6em 0 .5em; }
   .prose :global(ul), .prose :global(ol) { padding-left: 1.3em; } .prose :global(li) { margin: .35em 0; }
-  .prose :global(table) { width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: .96rem; display: block; overflow-x: auto; }
+  .prose :global(table) { width: 100%; max-width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: .96rem; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .prose :global(img) { max-width: 100%; height: auto; }
   .prose :global(th), .prose :global(td) { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
   .prose :global(th) { background: var(--surface-2); }
   .prose :global(blockquote) { margin: 1.5em 0; padding: 14px 20px; border-left: 4px solid var(--orange); background: var(--tint-orange); border-radius: 0 12px 12px 0; }
@@ -93,5 +94,18 @@ const ld = [
   .cta h3 { margin: 0 0 4px; } .cta p { margin: 0; font-size: .98rem; color: var(--ink-2); }
   .more { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
   .more__item { text-decoration: none; color: inherit; display: grid; gap: 8px; } .more__item h3 { margin: 0; } .muted { color: var(--ink-3); font-size: .9rem; }
-  @media (max-width: 960px) { .art__grid { grid-template-columns: 1fr; } .toc { position: static; } }
+  @media (max-width: 960px) { .art__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-top: 28px; } .toc { position: static; } }
+  @media (max-width: 600px) {
+    .art__head { padding-top: 28px; }
+    .art h1 { font-size: 1.85rem; }
+    .art__lead { font-size: 1.05rem; }
+    .art__cover { border-radius: 16px; max-height: 260px; }
+    .prose { font-size: 1.02rem; line-height: 1.7; }
+    .prose :global(h2) { font-size: 1.35rem; }
+    .prose :global(h3) { font-size: 1.12rem; }
+    .prose :global(th), .prose :global(td) { padding: 8px 10px; font-size: .9rem; }
+    .toc > div { display: none; }
+    .toc .btn { justify-self: start; }
+    .cta, .author { flex-direction: column; align-items: flex-start; }
+  }
 </style>
