@@ -1,8 +1,8 @@
 # Lumi Kids Studio — sajt
 
 Sajt za dečje programe po porudžbini (firme, vrtići, institucije, rođendaonice, rođendani).
-Statički sajt na **Astro**, hostovan na **Cloudflare Pages**; forma za upit radi preko
-**Pages Functions** i čuva upite u **Cloudflare D1** bazi. Bez Vercel-a i Supabase-a.
+Statički sajt na **Astro**, hostovan kao **Cloudflare Worker** sa statičkim assetima; forma za upit
+(`worker/inquiry.ts`, `POST /api/inquiry`) čuva upite u **Cloudflare D1** bazi. Bez Vercel-a i Supabase-a.
 
 ## Gde se šta menja
 
@@ -13,7 +13,7 @@ Statički sajt na **Astro**, hostovan na **Cloudflare Pages**; forma za upit rad
 | Tekstovi početne: za koga, usluge, koraci, primer programa, standardi, FAQ | `src/data/content.ts` |
 | Galerija (slike u `public/galerija/`) | `src/data/gallery.ts` |
 | Boje i tipografija | `src/styles/global.css` |
-| Polja forme | `src/components/InquiryForm.astro` + `functions/api/inquiry.ts` + nova migracija |
+| Polja forme | `src/components/InquiryForm.astro` + `worker/inquiry.ts` + nova migracija |
 
 ## Lokalno
 
@@ -21,24 +21,28 @@ Statički sajt na **Astro**, hostovan na **Cloudflare Pages**; forma za upit rad
 npm install
 npm run dev                 # samo sajt, http://localhost:4321
 npm run db:migrate:local    # jednom: lokalna D1 baza
-npm run preview             # sajt + forma (wrangler pages dev), http://localhost:8788
+npm run preview             # sajt + forma (wrangler dev), http://localhost:8787
 ```
 
-## Postavljanje na Cloudflare (jednom)
+## Cloudflare (produkcija)
 
-1. `npx wrangler login`
-2. `npx wrangler d1 create lumi-kids` → dobijeni `database_id` upiši u `wrangler.toml`.
-3. `npm run db:migrate` (pravi tabelu `inquiries` u produkciji).
-4. Cloudflare dashboard → Workers & Pages → Create → Pages → poveži ovaj GitHub repo.
-   Build command: `npm run build`, output: `dist`. Binding `DB` se čita iz `wrangler.toml`.
-   (Ili ručno: `npm run deploy`.)
-5. Custom domain: Pages projekat → Custom domains → `lumikids.rs`.
+- Worker: `lumi-kids-studio` — https://lumi-kids-studio.pavlevars.workers.dev
+- D1 baza: `lumi-kids` (`04a8b679-d7ee-4a3e-ba27-c43e0f304df5`), tabela `inquiries`
+- Novi deploy: `npx wrangler login` pa `npm run deploy`
+
+### Domen lumikids.rs
+
+1. Cloudflare dashboard → Add a domain → `lumikids.rs` (Free plan).
+2. Kod registrara (trenutno Loopia) zameni nameservere onima koje Cloudflare prikaže.
+3. Kad zona postane Active: Workers & Pages → `lumi-kids-studio` → Settings → Domains & Routes →
+   Add → Custom domain → `lumikids.rs`, pa isto za `www.lumikids.rs` (worker sam preusmerava www na glavni domen).
+4. Odkomentariši `[[routes]]` u `wrangler.toml` da bi budući `wrangler deploy` zadržao domene.
 
 ### Obaveštenja o upitima imejlom (opciono)
 
 Upiti se uvek čuvaju u D1. Da stižu i na imejl:
 - u `wrangler.toml` upiši `NOTIFY_EMAIL` (može više adresa odvojenih zarezom),
-- `npx wrangler pages secret put RESEND_API_KEY` (nalog na resend.com, verifikovan domen za `FROM_EMAIL`).
+- `npx wrangler secret put RESEND_API_KEY` (nalog na resend.com, verifikovan domen za `FROM_EMAIL`).
 
 ### Zaštita od spama (opciono)
 
