@@ -18,6 +18,26 @@ export type Workshop = {
 
 export const workshops: Workshop[] = [
   {
+    slug: 'bebi-cula',
+    name: 'Bebi čula',
+    area: 'Za bebe i najmlađe (0–4)',
+    short: 'Senzorna i taktilna igra za bebe i mališane uz roditelja: zvuk, dodir, boje i pokret.',
+    description:
+      'Nežna radionica za najmlađe, koju bebe i mališani rade zajedno sa roditeljem. Kroz bezbedne materijale različitih tekstura, zvečke i instrumente, meke kocke, svetla i boje podstičemo čula, pažnju i prve motoričke veštine. Tempo prati decu — bez pritiska, uz mnogo pevanja i maženja. Idealna je za firme u kojima mnogo zaposlenih ima bebe i malu decu.',
+    activities: [
+      'Taktilne stanice: tkanine, prirodni materijali, senzorne kese i lopte',
+      'Muzička igra: pesmice, ritam, zvečke i jednostavni instrumenti',
+      'Igra boja i svetla prilagođena bebama',
+      'Pokret i puzanje kroz mekani poligon uz roditelja',
+    ],
+    outcome: 'Roditelji dobijaju ideje za senzornu igru kod kuće — i fotografije prvih zajedničkih „radionica“.',
+    ages: '0–4 godine (uz roditelja)',
+    duration: '30–45 min',
+    groupSize: 'do 10 beba + roditelji',
+    color: 'red',
+    icon: 'heart',
+  },
+  {
     slug: 'zvuci-maste',
     name: 'Zvuci mašte',
     area: 'Muzika i senzorika',
@@ -31,7 +51,7 @@ export const workshops: Workshop[] = [
       'Pravljenje jednostavnog instrumenta',
     ],
     outcome: 'Dete nosi kući instrument koji je samo napravilo.',
-    ages: 'od 1 do 7 godina (prilagođeno uzrastu)',
+    ages: 'od 0 do 6 godina (bebe uz roditelja)',
     duration: '45–60 min',
     groupSize: 'do 15 dece',
     color: 'yellow',
@@ -92,7 +112,7 @@ export const workshops: Workshop[] = [
       'Kratak savetodavni razgovor sa roditeljima (po želji)',
     ],
     outcome: 'Roditelji dobijaju preporuke za igru i podsticaj razvoja kod kuće.',
-    ages: '2–8 godina',
+    ages: '1–8 godina',
     duration: '45–60 min',
     groupSize: 'do 10 dece',
     color: 'blue',

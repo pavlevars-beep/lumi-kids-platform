@@ -36,6 +36,7 @@ export const templates: Template[] = [
       { list: [
         'koncept i satnicu programa prilagođenu uzrastu i broju dece',
         'stručne voditelje radionica (nauka, muzika, ples, robotika, govor…) i sav materijal',
+        'posebne senzorne i muzičke radionice za bebe i decu do 4 godine, uz roditelja',
         'prijem, bedževe, koordinatora i zajedničko finale',
         'profesionalno fotografisanje i privatnu galeriju za svaku porodicu',
         'osveženje, poklone i dekoraciju — po vašem budžetu',
@@ -86,7 +87,7 @@ export const templates: Template[] = [
     preheader: 'Dolazimo sa kompletnom opremom i stručnim voditeljima.',
     blocks: [
       { p: '{pozdrav}' },
-      { p: 'Lumi Kids Studio izvodi kreativno-edukativne radionice za decu od 3 do 10 godina — nauka i eksperimenti, muzika, ples, robotika, čitanje i govor, priprema za školu.' },
+      { p: 'Lumi Kids Studio izvodi kreativno-edukativne radionice za decu od beba do 10 godina — senzorne i muzičke radionice za bebe uz roditelja, nauka i eksperimenti, muzika, ples, robotika, čitanje i govor, priprema za školu.' },
       { list: [
         'dolazimo u vaš prostor sa svim materijalom',
         'radionicu vodi stručna osoba iz oblasti (pedagog, logoped, defektolog, muzičar…)',

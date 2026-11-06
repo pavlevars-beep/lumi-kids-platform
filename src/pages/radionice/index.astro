@@ -14,17 +14,18 @@ import { workshops } from '../../data/workshops';
           <p class="lead">Svaku radionicu prilagođavamo uzrastu, broju dece i povodu. Za veće događaje kombinujemo dve ili više radionica kao paralelne stanice, uz fotografisanje, osveženje i poklone.</p>
           <ul class="facts">
             <li><strong>{workshops.length}</strong><span>tipova radionica</span></li>
-            <li><strong>1–12</strong><span>godina uzrast</span></li>
-            <li><strong>45–60</strong><span>minuta po radionici</span></li>
+            <li><strong>0–12</strong><span>godina — od beba do školaraca</span></li>
+            <li><strong>30–60</strong><span>minuta po radionici</span></li>
           </ul>
           <a href="/#upit" class="btn btn--primary">Pošaljite upit</a>
         </div>
         <div class="mosaic" aria-label="Pregled radionica">
           {workshops.map((w) => (
-            <a href={`/radionice/${w.slug}`} class={`tile c-${w.color}`}>
+            <a href={`/radionice/${w.slug}`} class={`tile c-${w.color}${w.slug === 'bebi-cula' ? ' tile--wide' : ''}`}>
               <span class="tile__icon"><Icon name={w.icon} size={26} /></span>
               <span class="tile__name">{w.name}</span>
               <span class="tile__area">{w.area}</span>
+              {w.slug === 'bebi-cula' && <span class="tile__new">Novo · bebe uz roditelja</span>}
             </a>
           ))}
         </div>
@@ -56,14 +57,17 @@ import { workshops } from '../../data/workshops';
     border-radius: 18px; background: var(--t); color: var(--ink); text-decoration: none;
     border: 1px solid transparent; transition: transform .2s ease, box-shadow .2s ease, background .2s;
   }
-  .tile:nth-child(3n+2) { transform: translateY(18px); }
+  .tile--wide { grid-column: 1 / -1; min-height: 0; position: relative; padding-right: 150px; }
+  .tile--wide .tile__icon { margin-bottom: 0; }
+  .tile__new { position: absolute; right: 16px; top: 16px; background: var(--red); color: #fff; font-size: .72rem; font-weight: 800; padding: 4px 10px; border-radius: 999px; }
+  .tile:nth-child(3n) { transform: translateY(18px); }
   .tile:hover { background: #fff; border-color: var(--line); box-shadow: var(--shadow); transform: translateY(-3px); }
-  .tile:nth-child(3n+2):hover { transform: translateY(15px); }
+  .tile:nth-child(3n):hover { transform: translateY(15px); }
   .tile__icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: #fff; color: var(--c); margin-bottom: auto; box-shadow: 0 2px 8px rgba(15,42,68,.06); }
   .tile__name { font-weight: 800; font-size: 1rem; line-height: 1.2; margin-top: 12px; }
   .tile__area { font-size: 0.78rem; font-weight: 700; color: var(--c); }
   @media (max-width: 960px) { .intro { grid-template-columns: 1fr; gap: 36px; } }
-  @media (max-width: 480px) { .mosaic { grid-template-columns: repeat(2, 1fr); } .tile:nth-child(3n+2) { transform: none; } .tile { min-height: 116px; } }
+  @media (max-width: 480px) { .mosaic { grid-template-columns: repeat(2, 1fr); } .tile:nth-child(3n) { transform: none; } .tile { min-height: 116px; } .tile--wide { padding-right: 16px; } .tile__new { position: static; align-self: flex-start; margin-top: 6px; } }
 
   .cta { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; background: var(--tint-blue); border-color: transparent; }
   .cta h2 { font-size: 1.5rem; margin-bottom: 6px; }

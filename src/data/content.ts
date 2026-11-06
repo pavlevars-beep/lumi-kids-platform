@@ -90,6 +90,10 @@ export const faq = [
     a: 'Od male rođendanske grupe do više od 100 dece. Kod većih događaja decu delimo po uzrastu i radimo paralelne stanice, tako da niko ne čeka.',
   },
   {
+    q: 'Imate li program za bebe i decu do 4 godine?',
+    a: 'Da. Imamo senzorne, taktilne i muzičke radionice za bebe i mališane od 0 do 4 godine, koje rade zajedno sa roditeljem (Bebi čula, Zvuci mašte). Na firmskim događajima ih organizujemo kao posebnu, mirniju stanicu, odvojenu od starije dece.',
+  },
+  {
     q: 'Kako se formira cena?',
     a: 'Cena zavisi od broja dece, trajanja i onoga što uključujete (radionice, fotografisanje, pokloni, osveženje, prostor). Uvek šaljemo ponudu u paketima, da možete da izaberete nivo koji odgovara budžetu. Fakturišemo firmama uz predračun.',
   },
