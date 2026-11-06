@@ -3,7 +3,7 @@ title: "Kako organizovati Kids Day u firmi: vodič za HR timove"
 description: "Vodič za HR: kako organizovati Kids Day u firmi – planiranje, uzrasti, prostor, satnica sa paralelnim stanicama, bezbednost, budžet i checklist."
 date: 2026-09-15
 author: "Tijana Varsaković"
-image: "/galerija/roditelji-i-deca-u-studiju.jpg"
+image: "/galerija/roditelji-i-deca-u-studiju.webp"
 category: "Za HR timove"
 keywords: ["kako organizovati kids day u firmi", "kids day za decu zaposlenih", "dečji program za firme", "događaj za decu zaposlenih", "kids day kragujevac", "dan dece u firmi ideje", "organizacija dečjeg dana u kompaniji"]
 readingTime: 8

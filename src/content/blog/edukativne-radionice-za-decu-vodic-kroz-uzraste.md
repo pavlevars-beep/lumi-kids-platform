@@ -3,7 +3,7 @@ title: "Edukativne radionice za decu: vodič kroz vrste i uzraste"
 description: "Edukativne radionice za decu po uzrastu: muzika, nauka, čitanje, ples, robotika, fotografija i makete. Šta svaka razvija i kako ih kombinovati na događaju."
 date: 2026-10-22
 author: "Tijana Varsaković"
-image: "/galerija/mali-naucnici-u-akciji.jpg"
+image: "/galerija/mali-naucnici-u-akciji.webp"
 category: "Radionice"
 keywords: ["edukativne radionice za decu", "radionice za decu kragujevac", "radionice za decu po uzrastu", "radionice za decu zaposlenih", "kreativne radionice za decu", "robotika za decu radionica", "naučne radionice za decu"]
 readingTime: 8

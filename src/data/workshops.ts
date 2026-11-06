@@ -56,7 +56,7 @@ export const workshops: Workshop[] = [
     groupSize: '12–16 dece',
     color: 'green',
     icon: 'flask',
-    image: '/galerija/mala-naucnica.jpg',
+    image: '/galerija/mala-naucnica.webp',
   },
   {
     slug: 'citanjac',

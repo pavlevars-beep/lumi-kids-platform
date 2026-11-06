@@ -3,7 +3,7 @@ title: "Kako zabaviti decu na događaju, a da ne bude samo animacija"
 description: "Kako kvalitetno zabaviti decu na događaju: razlika između animacije i radionice, male grupe, struktura programa, prilagođavanje uzrastu i pokret kao pauza."
 date: 2026-10-14
 author: "Marija Petrović"
-image: "/galerija/zajednicko-stvaranje.jpg"
+image: "/galerija/zajednicko-stvaranje.webp"
 category: "Radionice"
 keywords: ["kako zabaviti decu na događaju", "zabava za decu na događaju", "animacija za decu ili radionica", "aktivnosti za decu na firmskom događaju", "radionice za decu zaposlenih", "program za decu na proslavi", "animatori za decu kragujevac"]
 readingTime: 7

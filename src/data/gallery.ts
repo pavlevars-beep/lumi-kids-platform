@@ -2,7 +2,7 @@
 // wide: zauzima dve kolone u mreži.
 export type Photo = { src: string; alt: string; caption?: string; wide?: boolean };
 
-const g = (file: string, alt: string, caption?: string, wide = false): Photo => ({ src: `/galerija/${file}.jpg`, alt, caption, wide });
+const g = (file: string, alt: string, caption?: string, wide = false): Photo => ({ src: `/galerija/${file}.webp`, alt, caption, wide });
 
 export const gallery: Photo[] = [
   g('zajednicko-stvaranje', 'Tata pomaže sinu tokom radionice, pored njih devojčica crta', 'Roditelji i deca stvaraju zajedno', true),

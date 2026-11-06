@@ -3,7 +3,7 @@ title: "Porodično prijateljski poslodavac: programi za decu kao benefit"
 description: "Porodično prijateljski poslodavac: programi za decu zaposlenih tokom cele godine, merenje uspeha, predstavljanje ideje upravi i planiranje budžeta."
 date: 2026-11-05
 author: "Aleksandra Djordjević"
-image: "/galerija/tata-i-sin.jpg"
+image: "/galerija/tata-i-sin.webp"
 category: "Za HR timove"
 keywords: ["porodično prijateljski poslodavac", "programi za decu zaposlenih", "benefiti za zaposlene roditelje", "employer branding ideje", "team building za porodice", "dan porodice u firmi", "događaj za decu zaposlenih beograd"]
 readingTime: 7

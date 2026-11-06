@@ -3,7 +3,7 @@ title: "Novogodišnji program za decu zaposlenih: plan i satnica"
 description: "Novogodišnji program za decu zaposlenih: Deda Mraz, paketići, radionice, fotografisanje i satnica od 120 minuta. Kada rezervisati i kako izabrati izvođača."
 date: 2026-10-06
 author: "Aleksandra Djordjević"
-image: "/galerija/radionica-roditelji-i-deca.jpg"
+image: "/galerija/radionica-roditelji-i-deca.webp"
 category: "Za HR timove"
 keywords: ["novogodišnji program za decu zaposlenih", "deda mraz za firme", "novogodišnja proslava za decu zaposlenih", "novogodišnji paketići za decu zaposlenih", "dečja novogodišnja žurka firma", "deda mraz kragujevac", "novogodišnji program za decu beograd"]
 readingTime: 8
