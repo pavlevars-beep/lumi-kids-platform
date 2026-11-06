@@ -41,6 +41,7 @@ Lista firmi i kontakti se čuvaju **samo u D1 bazi**, ne u ovom (javnom) repou.
 - Worker: `lumi-kids-studio` — https://lumi-kids-studio.pavlevars.workers.dev
 - D1 baza: `lumi-kids` (`04a8b679-d7ee-4a3e-ba27-c43e0f304df5`), tabela `inquiries`
 - Novi deploy: `npx wrangler login` pa `npm run db:migrate` (ako ima novih migracija) i `npm run deploy`
+- Alternativa bez Node-a na serveru: `./scripts/bundle.sh` pravi `deploy/bundle.tgz` (izgrađen sajt bez slika + worker); slike se uzimaju iz `public/`
 
 ### Domen lumikids.rs
 
