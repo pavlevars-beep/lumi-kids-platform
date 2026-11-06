@@ -198,7 +198,7 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">${esc(t.preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${B.bg}"><tr><td align="center" style="padding:28px 12px">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid ${B.line}">
-<tr><td style="padding:22px 32px 18px"><img src="${site}/img/logo.png" width="150" alt="Lumi Kids Studio" style="display:block;border:0;height:auto"></td></tr>
+<tr><td style="padding:22px 32px 18px"><img src="${site}/img/email/logo.png" width="170" alt="Lumi Kids Studio" style="display:block;border:0;height:auto;max-width:170px"></td></tr>
 <tr><td style="height:5px;line-height:5px;font-size:0;background:linear-gradient(90deg,#ff4b4b,#ff9e3d,#ffd700,#8bc34a,#03a9f4,#0277bd);background-color:#03a9f4">&nbsp;</td></tr>
 <tr><td style="padding:0"><img src="${site}/img/email/${t.hero}.jpg" width="600" alt="${esc(t.heroAlt)}" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>
 <tr><td style="padding:30px 32px 10px">${body}
