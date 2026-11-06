@@ -1,0 +1,316 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import WorkshopCard from '../components/WorkshopCard.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import Gallery from '../components/Gallery.astro';
+import { workshops } from '../data/workshops';
+import { audiences, services, steps, sampleProgram, standards, faq } from '../data/content';
+import { site } from '../data/site';
+
+const featured = audiences.find((a) => a.featured)!;
+const others = audiences.filter((a) => !a.featured);
+const serviceColors = ['blue', 'green', 'orange', 'red', 'navy', 'yellow', 'red', 'green'];
+---
+<Base>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div class="hero__copy">
+        <span class="eyebrow">Dečji programi po porudžbini</span>
+        <h1>Program za decu na vašem događaju — <span class="hl">ključ u ruke</span>.</h1>
+        <p class="hero__lead">
+          Za firme, vrtiće, institucije i rođendane. Vi nam javite povod i broj dece — mi osmislimo program,
+          dovedemo stručni tim i isporučimo termin koji iza sebe ostavlja nešto vredno: znanje, rad koji dete nosi kući i fotografije za porodicu.
+        </p>
+        <div class="hero__cta">
+          <a href="#upit" class="btn btn--primary">Pošaljite upit <Icon name="arrow" size={18} /></a>
+          <a href="/radionice" class="btn btn--ghost">Pogledajte radionice</a>
+        </div>
+        <ul class="hero__facts">
+          <li><Icon name="map" size={20} /> Kod vas ili u našem prostoru</li>
+          <li><Icon name="users" size={20} /> Stručni voditelji, male grupe</li>
+          <li><Icon name="clock" size={20} /> Predlog i ponuda za {site.responseTime}</li>
+        </ul>
+      </div>
+      <div class="hero__media">
+        <img class="hero__img hero__img--a" src="/galerija/deca-studio.jpg" alt="Deca na Lumi Kids radionici" width="933" height="1400" loading="eager" />
+        <img class="hero__img hero__img--b" src="/galerija/radionica-studio.jpg" alt="Prostor Lumi Kids Studija" width="1400" height="933" loading="eager" />
+        <div class="hero__badge card">
+          <strong>9 tipova radionica</strong>
+          <span>nauka, muzika, ples, robotika, govor…</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZA KOGA -->
+  <section class="section section--alt" id="za-koga">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Za koga radimo</span>
+        <h2>Jedan partner za sav dečji sadržaj vašeg događaja</h2>
+        <p>Radimo sa organizacijama koje žele da deca na njihovom događaju budu zbrinuta, zainteresovana i da odu kući sa osmehom — bez dodatnog posla za organizatora.</p>
+      </div>
+      <div class="aud">
+        <article class="aud__featured">
+          <span class="chip chip--light">Najčešće nas angažuju</span>
+          <h3>{featured.title}</h3>
+          <p class="aud__lead">{featured.lead}</p>
+          <p>{featured.text}</p>
+          <ul class="checklist checklist--light">
+            <li><Icon name="check" size={18} /> Jedna kontakt osoba i jasna ponuda u paketima</li>
+            <li><Icon name="check" size={18} /> Fakturisanje firmi uz predračun</li>
+            <li><Icon name="check" size={18} /> Fotografije za porodice i internu komunikaciju</li>
+            <li><Icon name="check" size={18} /> Formular saglasnosti koji HR samo prosledi</li>
+          </ul>
+          <a href="#upit" class="btn btn--light">Zatražite ponudu za firmu</a>
+        </article>
+        <div class="aud__list">
+          {others.map((a) => (
+            <article class="aud__item">
+              <h3>{a.title}</h3>
+              <p class="aud__lead">{a.lead}</p>
+              <p>{a.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USLUGE -->
+  <section class="section" id="usluge">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Ključ u ruke</span>
+        <h2>Sve što događaj sa decom traži — na jednom mestu</h2>
+        <p>Birate samo radionicu ili kompletan program. Svaku stavku možete uključiti ili izostaviti, a ponudu prilagođavamo vašem budžetu.</p>
+      </div>
+      <div class="grid grid--4">
+        {services.map((s, i) => (
+          <div class={`svc card c-${serviceColors[i]}`}>
+            <span class="icon-badge"><Icon name={s.icon} /></span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIMER PROGRAMA -->
+  <section class="section section--alt">
+    <div class="wrap sample">
+      <div>
+        <span class="eyebrow">Primer iz prakse</span>
+        <h2>{sampleProgram.title}</h2>
+        <div class="sample__meta">{sampleProgram.meta.map((m) => <span class="chip">{m}</span>)}</div>
+        <p>{sampleProgram.intro}</p>
+        <h4>Tim na događaju</h4>
+        <ul class="checklist">
+          {sampleProgram.team.map((t) => <li><Icon name="check" size={18} /> {t}</li>)}
+        </ul>
+        <p class="sample__note">Isti model prilagođavamo za Kids Day, Dan porodice, Uskrs, 8. mart, Dečju nedelju ili kraj školske godine.</p>
+      </div>
+      <ol class="timeline card">
+        {sampleProgram.timeline.map((t) => (
+          <li><span class="timeline__t">{t.time}</span><span>{t.text}</span></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- KAKO RADIMO -->
+  <section class="section" id="kako-radimo">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Kako radimo</span>
+        <h2>Od prve poruke do fotografija — u četiri koraka</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step">
+            <span class="step__n">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- RADIONICE -->
+  <section class="section section--alt" id="radionice">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Naše radionice</span>
+        <h2>Raznovrsne radionice, isti standard</h2>
+        <p>Svaka radionica ima jasan cilj, vodi je stručna osoba iz oblasti, a dete na kraju nosi kući nešto što je samo napravilo. Kombinujemo ih po uzrastu i povodu.</p>
+      </div>
+      <div class="grid grid--3">
+        {workshops.map((w) => <WorkshopCard w={w} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- STANDARDI -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Zašto Lumi Kids</span>
+        <h2>Smislen termin, a ne „zabava usput“</h2>
+        <p>Svaka radionica prati naš operativni postupak — od pripreme prostora i spiska alergija do završnog kruga i fotografija.</p>
+      </div>
+      <div class="grid grid--3">
+        {standards.map((s) => (
+          <div class="std">
+            <Icon name="shield" size={22} />
+            <div><h3>{s.title}</h3><p>{s.text}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIJA -->
+  <section class="section section--alt" id="galerija">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Galerija</span>
+        <h2>Sa naših radionica</h2>
+        <p>Više fotografija i najava novih programa na Instagramu <a href={site.instagram} target="_blank" rel="noopener">{site.instagramHandle}</a>.</p>
+      </div>
+      <Gallery />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="pitanja">
+    <div class="wrap faq-wrap">
+      <div class="section-head">
+        <span class="eyebrow">Česta pitanja</span>
+        <h2>Ono što nas najčešće pitaju</h2>
+        <p>Ne vidite odgovor? Napišite ga u formi za upit — odgovaramo na svako pitanje.</p>
+      </div>
+      <div class="faq">
+        {faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- UPIT -->
+  <section class="section upit" id="upit">
+    <div class="wrap upit__in">
+      <div class="upit__copy">
+        <span class="eyebrow eyebrow--light">Upit</span>
+        <h2>Javite nam šta planirate</h2>
+        <p>Dovoljno je nekoliko podataka. U roku od {site.responseTime} šaljemo predlog programa sa satnicom i ponudu u paketima — bez obaveze.</p>
+        <ul class="checklist checklist--light">
+          <li><Icon name="check" size={18} /> Besplatan predlog programa</li>
+          <li><Icon name="check" size={18} /> Paketi za različite budžete</li>
+          <li><Icon name="check" size={18} /> Termin se rezerviše avansom</li>
+        </ul>
+        <div class="upit__contact">
+          {site.phone && <a href={`tel:${site.phone.replace(/\s/g, '')}`}><Icon name="phone" size={18} /> {site.phone}</a>}
+          {site.email && <a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> {site.email}</a>}
+          <a href={site.instagram} target="_blank" rel="noopener"><Icon name="instagram" size={18} /> {site.instagramHandle}</a>
+        </div>
+      </div>
+      <InquiryForm />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px); overflow: hidden; }
+  .hero__in { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+  .hl { color: var(--brand); position: relative; white-space: nowrap; }
+  .hl::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0.04em; height: 0.22em; background: var(--yellow); opacity: .55; z-index: -1; border-radius: 4px; }
+  .hero__lead { font-size: 1.16rem; color: var(--ink-2); max-width: 560px; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0; }
+  .hero__facts { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--ink-2); font-weight: 700; font-size: 0.95rem; }
+  .hero__facts li { display: flex; align-items: center; gap: 8px; }
+  .hero__facts :global(svg) { color: var(--brand); }
+  .hero__media { position: relative; min-height: 480px; }
+  .hero__img { position: absolute; object-fit: cover; border-radius: 24px; box-shadow: 0 20px 50px rgba(15,42,68,.16); }
+  .hero__img--a { width: 58%; height: 92%; right: 0; top: 0; border: 6px solid #fff; }
+  .hero__img--b { width: 56%; height: 48%; left: 0; bottom: 0; border: 6px solid #fff; }
+  .hero__media::before { content: ''; position: absolute; width: 140px; height: 140px; border-radius: 50%; background: var(--yellow); opacity: .35; left: 12%; top: 6%; }
+  .hero__badge { position: absolute; left: 4%; top: 18%; padding: 14px 18px; display: grid; max-width: 220px; }
+  .hero__badge strong { color: var(--brand-deep); }
+  .hero__badge span { font-size: 0.88rem; color: var(--ink-3); }
+
+  .aud { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; }
+  .aud__featured { background: linear-gradient(150deg, var(--brand) 0%, var(--brand-deep) 100%); color: #e5f2fb; border-radius: 24px; padding: 34px; display: flex; flex-direction: column; gap: 6px; }
+  .aud__featured h3 { color: #fff; font-size: 1.8rem; margin-top: 12px; }
+  .aud__featured .aud__lead { color: #fff; }
+  .aud__featured .btn { align-self: flex-start; margin-top: 18px; }
+  .chip--light { background: rgba(255,255,255,.16); color: #fff; align-self: flex-start; }
+  .checklist--light svg { color: var(--yellow); }
+  .aud__list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .aud__item { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; background: var(--bg); }
+  .aud__item p:last-child { margin: 0; color: var(--ink-2); font-size: 0.96rem; }
+  .aud__lead { font-weight: 700; margin-bottom: 8px; }
+
+  .svc h3 { margin-top: 16px; }
+  .svc p { color: var(--ink-2); font-size: 0.96rem; margin: 0; }
+
+  .sample { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .sample__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .sample p { color: var(--ink-2); }
+  .sample h4 { margin-top: 24px; }
+  .sample__note { margin-top: 22px; font-size: 0.95rem; }
+  .timeline { list-style: none; margin: 0; padding: 12px 28px; }
+  .timeline li { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px dashed var(--line); }
+  .timeline li:last-child { border: 0; }
+  .timeline__t { font-weight: 900; color: var(--brand); font-variant-numeric: tabular-nums; }
+
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: s; }
+  .step { position: relative; padding-top: 8px; }
+  .step__n { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 900; margin-bottom: 16px; }
+  .step:nth-child(2) .step__n { background: var(--green); }
+  .step:nth-child(3) .step__n { background: var(--orange); }
+  .step:nth-child(4) .step__n { background: var(--red); }
+  .step p { color: var(--ink-2); }
+
+  .std { display: flex; gap: 14px; }
+  .std > :global(svg) { color: var(--green); flex: none; margin-top: 2px; }
+  .std h3 { font-size: 1.08rem; margin-bottom: 4px; }
+  .std p { color: var(--ink-2); margin: 0; font-size: 0.97rem; }
+
+  .faq-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: start; }
+  .faq details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+  .faq summary { font-weight: 800; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font-size: 1.05rem; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; font-size: 1.4rem; line-height: 1; color: var(--brand); transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { color: var(--ink-2); margin: 12px 0 0; }
+
+  .upit { background: var(--brand-deep); color: #d6e4f0; }
+  .upit__in { display: grid; grid-template-columns: 0.8fr 1.4fr; gap: 48px; align-items: start; }
+  .upit h2 { color: #fff; }
+  .eyebrow--light { color: var(--yellow); }
+  .upit__copy { position: sticky; top: 100px; }
+  .upit__copy .checklist { margin: 22px 0 28px; }
+  .upit__contact { display: grid; gap: 10px; }
+  .upit__contact a { color: #fff; text-decoration: none; display: inline-flex; gap: 10px; align-items: center; font-weight: 700; }
+
+  @media (max-width: 960px) {
+    .hero__in, .aud, .sample, .faq-wrap, .upit__in { grid-template-columns: 1fr; }
+    .hero__media { min-height: 380px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .upit__copy { position: static; }
+  }
+  @media (max-width: 600px) {
+    .aud__list, .steps { grid-template-columns: 1fr; }
+    .hero__media { min-height: 320px; }
+    .hero__badge { display: none; }
+    .hl { white-space: normal; }
+  }
+</style>

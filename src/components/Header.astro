@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+const links = [
+  { href: '/#za-koga', label: 'Za koga' },
+  { href: '/#usluge', label: 'Šta uključujemo' },
+  { href: '/#kako-radimo', label: 'Kako radimo' },
+  { href: '/radionice', label: 'Radionice' },
+  { href: '/#galerija', label: 'Galerija' },
+  { href: '/#pitanja', label: 'Pitanja' },
+];
+---
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a href="/" class="hdr__logo" aria-label="Lumi Kids Studio — početna">
+      <img src="/img/logo.png" alt="Lumi Kids Studio" width="447" height="180" />
+    </a>
+    <nav class="hdr__nav" id="nav" aria-label="Glavni meni">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a href="/#upit" class="btn btn--primary hdr__cta">Pošaljite upit</a>
+    </nav>
+    <button class="hdr__toggle" aria-controls="nav" aria-expanded="false" aria-label="Otvori meni">
+      <Icon name="menu" />
+    </button>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.hdr__toggle');
+  const nav = document.getElementById('nav');
+  btn?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(!!open));
+  });
+  nav?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      btn?.setAttribute('aria-expanded', 'false');
+    }),
+  );
+</script>
+
+<style>
+  .hdr {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251, 250, 247, 0.92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 72px; }
+  .hdr__logo img { height: 50px; width: auto; }
+  .hdr__nav { display: flex; align-items: center; gap: 22px; }
+  .hdr__nav a:not(.btn) { color: var(--ink-2); text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+  .hdr__nav a:not(.btn):hover { color: var(--brand); }
+  .hdr__cta { padding: 10px 18px; font-size: 0.92rem; }
+  .hdr__toggle { display: none; background: none; border: 0; color: var(--ink); padding: 8px; cursor: pointer; }
+  @media (max-width: 960px) {
+    .hdr__toggle { display: block; }
+    .hdr__nav {
+      position: absolute; top: 72px; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--surface); border-bottom: 1px solid var(--line);
+      padding: 8px 20px 20px; display: none; box-shadow: var(--shadow);
+    }
+    .hdr__nav.is-open { display: flex; }
+    .hdr__nav a:not(.btn) { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 1rem; }
+    .hdr__cta { margin-top: 14px; }
+  }
+</style>

@@ -1,0 +1,18 @@
+# Cloudflare Pages konfiguracija za Lumi Kids Studio
+name = "lumi-kids-studio"
+compatibility_date = "2026-10-01"
+pages_build_output_dir = "dist"
+
+# D1 baza u kojoj se čuvaju upiti sa sajta.
+# Napravi je jednom: npx wrangler d1 create lumi-kids  -> upiši dobijeni database_id ispod.
+[[d1_databases]]
+binding = "DB"
+database_name = "lumi-kids"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+[vars]
+# Na koju adresu stižu obaveštenja o novim upitima (potreban je i RESEND_API_KEY secret).
+NOTIFY_EMAIL = ""
+# Adresa pošiljaoca (domen mora biti verifikovan u Resend-u).
+FROM_EMAIL = "Lumi Kids sajt <upiti@lumikids.rs>"

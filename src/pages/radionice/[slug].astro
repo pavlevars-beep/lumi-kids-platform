@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import WorkshopCard from '../../components/WorkshopCard.astro';
+import { workshops, type Workshop } from '../../data/workshops';
+
+export function getStaticPaths() {
+  return workshops.map((w) => ({ params: { slug: w.slug }, props: { w } }));
+}
+const { w } = Astro.props as { w: Workshop };
+const related = workshops.filter((x) => x.slug !== w.slug).slice(0, 3);
+const inquiry = `/?radionica=${encodeURIComponent(w.name)}#upit`;
+---
+<Base title={w.name} description={`${w.name} — ${w.short}`}>
+  <section class={`section wd c-${w.color}`}>
+    <div class="wrap wd__in">
+      <div>
+        <a href="/radionice" class="wd__back">← Sve radionice</a>
+        <span class="eyebrow">{w.area}</span>
+        <h1>{w.name}</h1>
+        <p class="wd__lead">{w.description}</p>
+        <h2 class="wd__h">Šta deca rade</h2>
+        <ul class="checklist">
+          {w.activities.map((a) => <li><Icon name="check" size={18} /> {a}</li>)}
+        </ul>
+        <div class="wd__outcome">
+          <Icon name="gift" />
+          <p><strong>Šta ostaje posle radionice:</strong> {w.outcome}</p>
+        </div>
+      </div>
+      <aside class="card wd__aside">
+        <span class="icon-badge wd__icon"><Icon name={w.icon} size={30} /></span>
+        <dl>
+          <div><dt>Uzrast</dt><dd>{w.ages}</dd></div>
+          <div><dt>Trajanje</dt><dd>{w.duration}</dd></div>
+          <div><dt>Grupa</dt><dd>{w.groupSize}</dd></div>
+          <div><dt>Lokacija</dt><dd>kod vas ili u našem prostoru</dd></div>
+        </dl>
+        <p class="wd__note">Može samostalno ili kao deo većeg programa sa fotografisanjem, osveženjem i poklonima.</p>
+        <a href={inquiry} class="btn btn--primary">Pošaljite upit za ovu radionicu</a>
+      </aside>
+    </div>
+  </section>
+  <section class="section section--alt">
+    <div class="wrap">
+      <h2>Kombinujte sa drugim radionicama</h2>
+      <div class="grid grid--3">{related.map((r) => <WorkshopCard w={r} />)}</div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .wd__in { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; align-items: start; }
+  .wd__back { display: inline-block; margin-bottom: 20px; font-weight: 700; text-decoration: none; color: var(--ink-3); }
+  .wd .eyebrow { color: var(--c); }
+  .wd .eyebrow::before { background: var(--c); }
+  .wd__lead { font-size: 1.14rem; color: var(--ink-2); }
+  .wd__h { font-size: 1.3rem; margin-top: 32px; }
+  .wd__outcome { display: flex; gap: 14px; align-items: flex-start; margin-top: 28px; padding: 18px 20px; border-radius: var(--radius); background: var(--t); color: var(--ink); }
+  .wd__outcome :global(svg) { color: var(--c); flex: none; }
+  .wd__outcome p { margin: 0; }
+  .wd__aside { position: sticky; top: 100px; display: grid; gap: 16px; }
+  .wd__icon { width: 64px; height: 64px; border-radius: 18px; }
+  dl { margin: 0; display: grid; gap: 12px; }
+  dl div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+  dt { color: var(--ink-3); font-weight: 700; }
+  dd { margin: 0; font-weight: 800; text-align: right; }
+  .wd__note { color: var(--ink-2); font-size: 0.95rem; margin: 0; }
+  @media (max-width: 900px) { .wd__in { grid-template-columns: 1fr; } .wd__aside { position: static; } }
+</style>

@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import type { Workshop } from '../data/workshops';
+interface Props { w: Workshop }
+const { w } = Astro.props;
+---
+<a href={`/radionice/${w.slug}`} class={`wcard c-${w.color}`}>
+  <div class="wcard__top">
+    <span class="icon-badge"><Icon name={w.icon} /></span>
+    <span class="wcard__area">{w.area}</span>
+  </div>
+  <h3>{w.name}</h3>
+  <p>{w.short}</p>
+  <div class="wcard__meta">
+    <span class="chip">{w.ages}</span>
+    <span class="chip">{w.duration}</span>
+  </div>
+  <span class="wcard__more">Detaljnije <Icon name="arrow" size={16} /></span>
+</a>
+
+<style>
+  .wcard {
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; text-decoration: none; color: inherit; position: relative; overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s;
+  }
+  .wcard::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--c); opacity: .85; }
+  .wcard:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: transparent; }
+  .wcard__top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .wcard__area { font-size: 0.8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--c); }
+  .wcard h3 { margin-bottom: 4px; }
+  .wcard p { color: var(--ink-2); font-size: 0.98rem; flex: 1; }
+  .wcard__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .wcard__more { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: var(--brand); font-size: 0.95rem; }
+</style>

@@ -1,0 +1,3 @@
+# Kopiraj u .dev.vars za lokalni rad (wrangler pages dev)
+RESEND_API_KEY=
+TURNSTILE_SECRET=

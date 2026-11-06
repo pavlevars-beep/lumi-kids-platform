@@ -1,0 +1,208 @@
+---
+import Icon from './Icon.astro';
+import { workshops } from '../data/workshops';
+import { site } from '../data/site';
+
+const clientTypes = ['Firma', 'Vrtić / škola', 'Institucija / udruženje', 'Rođendaonica / igraonica', 'Roditelj (rođendan)'];
+const occasions = ['Kids Day / dan porodice', 'Novogodišnji program', 'Rođendan', 'Praznik / tematski dan', 'Festival / dan otvorenih vrata', 'Serijal radionica', 'Nešto drugo'];
+const ageGroups = ['do 3 god.', '4–6 god.', '7–10 god.', '11+ god.'];
+const services = ['Radionice', 'Fotografisanje', 'Osveženje', 'Pokloni', 'Dekoracija', 'Deda Mraz / animator', 'Prostor za događaj'];
+const budgets = ['Do 50.000 RSD', '50.000–150.000 RSD', '150.000–300.000 RSD', 'Preko 300.000 RSD', 'Još ne znamo'];
+---
+<form class="inq card" id="inquiry-form" method="post" action="/api/inquiry" novalidate>
+  <fieldset>
+    <legend>Ko organizuje?</legend>
+    <div class="pills">
+      {clientTypes.map((t, i) => (
+        <label class="pill"><input type="radio" name="client_type" value={t} required checked={i === 0} /><span>{t}</span></label>
+      ))}
+    </div>
+  </fieldset>
+
+  <div class="row">
+    <label class="fld">
+      <span>Povod</span>
+      <select name="occasion">
+        {occasions.map((o) => <option>{o}</option>)}
+      </select>
+    </label>
+    <label class="fld">
+      <span>Naziv firme / ustanove <em>(opciono)</em></span>
+      <input name="organization" autocomplete="organization" />
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="fld">
+      <span>Ime i prezime *</span>
+      <input name="name" required autocomplete="name" />
+    </label>
+    <label class="fld">
+      <span>Imejl *</span>
+      <input name="email" type="email" required autocomplete="email" inputmode="email" />
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="fld">
+      <span>Telefon</span>
+      <input name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+    </label>
+    <label class="fld">
+      <span>Grad</span>
+      <input name="city" autocomplete="address-level2" placeholder="npr. Kragujevac" />
+    </label>
+  </div>
+
+  <div class="row row--3">
+    <label class="fld">
+      <span>Okvirni datum</span>
+      <input name="event_date" type="date" />
+    </label>
+    <label class="fld">
+      <span>Broj dece (okvirno)</span>
+      <input name="kids_count" type="number" min="1" max="2000" inputmode="numeric" />
+    </label>
+    <label class="fld">
+      <span>Okvirni budžet</span>
+      <select name="budget">
+        <option value="">— izaberite —</option>
+        {budgets.map((b) => <option>{b}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <fieldset>
+    <legend>Uzrast dece</legend>
+    <div class="pills">
+      {ageGroups.map((a) => <label class="pill"><input type="checkbox" name="age_groups" value={a} /><span>{a}</span></label>)}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Gde se održava?</legend>
+    <div class="pills">
+      {['U našem prostoru', 'Lumi Kids obezbeđuje prostor', 'Nismo još sigurni'].map((l, i) => (
+        <label class="pill"><input type="radio" name="location" value={l} checked={i === 0} /><span>{l}</span></label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Šta želite da uključimo?</legend>
+    <div class="pills">
+      {services.map((s, i) => <label class="pill"><input type="checkbox" name="services" value={s} checked={i === 0} /><span>{s}</span></label>)}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Radionice koje vas zanimaju <em>(opciono — predložićemo i sami)</em></legend>
+    <div class="pills">
+      {workshops.map((w) => <label class="pill"><input type="checkbox" name="workshops" value={w.name} /><span>{w.name}</span></label>)}
+    </div>
+  </fieldset>
+
+  <label class="fld">
+    <span>Recite nam još nešto</span>
+    <textarea name="message" rows="4" placeholder="Satnica, tema, posebne želje, broj zaposlenih koji dolaze sa decom…"></textarea>
+  </label>
+
+  <!-- zamka za botove: ljudi ovo polje ne vide -->
+  <label class="hp" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off" /></label>
+  <input type="hidden" name="source_page" value={Astro.url.pathname} />
+
+  <label class="consent">
+    <input type="checkbox" name="consent" required />
+    <span>Saglasan/na sam da me Lumi Kids Studio kontaktira u vezi sa ovim upitom.</span>
+  </label>
+
+  <div class="inq__foot">
+    <button type="submit" class="btn btn--primary">Pošaljite upit <Icon name="arrow" size={18} /></button>
+    <p class="inq__note">Odgovaramo u roku od {site.responseTime} sa predlogom programa i ponudom.</p>
+  </div>
+  <p class="inq__status" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const form = document.getElementById('inquiry-form') as HTMLFormElement | null;
+  const statusEl = form?.querySelector<HTMLElement>('.inq__status');
+  const button = form?.querySelector<HTMLButtonElement>('button[type=submit]');
+
+  // Preselekcija radionice ako se dolazi sa /radionice/<slug> (?radionica=Naziv)
+  const pre = new URLSearchParams(location.search).get('radionica');
+  if (pre && form) {
+    form.querySelectorAll<HTMLInputElement>('input[name=workshops]').forEach((i) => {
+      if (i.value === pre) i.checked = true;
+    });
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!statusEl || !button) return;
+    statusEl.className = 'inq__status';
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    button.disabled = true;
+    statusEl.textContent = 'Šaljemo…';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Greška pri slanju.');
+      form.reset();
+      statusEl.classList.add('is-ok');
+      statusEl.textContent = 'Hvala! Upit je stigao — javljamo vam se uskoro sa predlogom programa.';
+    } catch (err) {
+      statusEl.classList.add('is-err');
+      statusEl.textContent =
+        (err instanceof Error ? err.message : 'Greška pri slanju.') +
+        ' Pokušajte ponovo ili nam pišite na Instagramu.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .inq { display: grid; gap: 22px; padding: clamp(22px, 4vw, 36px); }
+  fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+  legend, .fld > span { font-weight: 800; font-size: 0.92rem; margin-bottom: 8px; display: block; color: var(--ink); }
+  em { font-style: normal; font-weight: 600; color: var(--ink-3); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .row--3 { grid-template-columns: repeat(3, 1fr); }
+  .fld { display: block; }
+  input:not([type=radio]):not([type=checkbox]), select, textarea {
+    width: 100%; font: inherit; font-size: 1rem; color: var(--ink);
+    padding: 12px 14px; border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--bg); transition: border-color .15s, background .15s;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--brand); background: #fff; }
+  textarea { resize: vertical; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill input { position: absolute; opacity: 0; pointer-events: none; }
+  .pill span {
+    display: inline-block; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+    border: 1.5px solid var(--line); background: var(--bg); font-weight: 700; font-size: 0.92rem; color: var(--ink-2);
+    transition: all .15s;
+  }
+  .pill input:checked + span { background: var(--tint-blue); border-color: var(--brand); color: var(--brand-deep); }
+  .pill input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.92rem; color: var(--ink-2); }
+  .consent input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--brand); }
+  .hp { position: absolute; left: -9999px; }
+  .inq__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .inq__note { margin: 0; color: var(--ink-3); font-size: 0.92rem; }
+  .inq__status { margin: 0; font-weight: 700; }
+  .inq__status:empty { display: none; }
+  .inq__status.is-ok { color: #3f7a12; background: var(--tint-green); padding: 14px 16px; border-radius: var(--radius-sm); }
+  .inq__status.is-err { color: #b42318; background: var(--tint-red); padding: 14px 16px; border-radius: var(--radius-sm); }
+  button:disabled { opacity: .6; cursor: wait; }
+  @media (max-width: 720px) { .row, .row--3 { grid-template-columns: 1fr; } }
+</style>

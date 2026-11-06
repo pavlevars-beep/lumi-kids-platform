@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import WorkshopCard from '../../components/WorkshopCard.astro';
+import { workshops } from '../../data/workshops';
+---
+<Base title="Radionice" description="Katalog Lumi Kids radionica: nauka, muzika, ples, robotika, čitanje, logoped, defektolog, fotografija i arhitektura. Za firme, vrtiće i rođendane.">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Katalog radionica</span>
+        <h1>Radionice koje kombinujemo u vaš program</h1>
+        <p>Svaku radionicu prilagođavamo uzrastu, broju dece i povodu. Za veće događaje kombinujemo dve ili više radionica kao paralelne stanice, uz fotografisanje, osveženje i poklone.</p>
+      </div>
+      <div class="grid grid--3">
+        {workshops.map((w) => <WorkshopCard w={w} />)}
+      </div>
+      <div class="cta card">
+        <div>
+          <h2>Ne znate koju da izaberete?</h2>
+          <p>Recite nam uzrast i broj dece — predložićemo kombinaciju koja najbolje odgovara vašem događaju.</p>
+        </div>
+        <a href="/#upit" class="btn btn--primary">Pošaljite upit</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cta { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; background: var(--tint-blue); border-color: transparent; }
+  .cta h2 { font-size: 1.5rem; margin-bottom: 6px; }
+  .cta p { margin: 0; color: var(--ink-2); }
+</style>
