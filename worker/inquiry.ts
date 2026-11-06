@@ -1,7 +1,8 @@
-// Cloudflare Pages Function: POST /api/inquiry
+// POST /api/inquiry
 // Čuva upit u D1 (binding DB) i, ako je podešeno, šalje obaveštenje imejlom preko Resend-a.
 
-interface Env {
+export interface Env {
+  ASSETS: Fetcher;
   DB?: D1Database;
   RESEND_API_KEY?: string;
   NOTIFY_EMAIL?: string;
@@ -31,7 +32,7 @@ function respond(req: Request, status: number, body: Record<string, unknown>) {
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export async function handleInquiry(request: Request, env: Env): Promise<Response> {
   let fd: FormData;
   try {
     fd = await request.formData();
@@ -125,4 +126,4 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return respond(request, 503, { ok: false, error: 'Slanje trenutno nije dostupno.' });
   }
   return respond(request, 200, { ok: true });
-};
+}

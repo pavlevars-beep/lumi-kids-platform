@@ -1,14 +1,30 @@
-# Cloudflare Pages konfiguracija za Lumi Kids Studio
+# Cloudflare Workers konfiguracija za Lumi Kids Studio
 name = "lumi-kids-studio"
+main = "worker/index.ts"
 compatibility_date = "2026-10-01"
-pages_build_output_dir = "dist"
+workers_dev = true
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+# Custom domeni — odkomentariši kad je zona lumikids.rs aktivna na Cloudflare nalogu.
+# [[routes]]
+# pattern = "lumikids.rs"
+# custom_domain = true
+#
+# [[routes]]
+# pattern = "www.lumikids.rs"
+# custom_domain = true
 
 # D1 baza u kojoj se čuvaju upiti sa sajta.
-# Napravi je jednom: npx wrangler d1 create lumi-kids  -> upiši dobijeni database_id ispod.
 [[d1_databases]]
 binding = "DB"
 database_name = "lumi-kids"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "04a8b679-d7ee-4a3e-ba27-c43e0f304df5"
 migrations_dir = "migrations"
 
 [vars]
