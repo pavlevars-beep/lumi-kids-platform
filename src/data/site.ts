@@ -6,7 +6,7 @@ export const site = {
   description:
     'Lumi Kids Studio osmišljava i isporučuje dečje programe za firme, vrtiće, institucije i rođendane: radionice, prijem, fotografisanje, osveženje i pokloni. Kod vas ili u našem prostoru.',
   city: 'Kragujevac',
-  serviceArea: 'Kragujevac, Beograd i cela Srbija po dogovoru',
+  serviceArea: 'Beograd, Kragujevac i cela Srbija po dogovoru',
   phone: '+381 69 304 2721',
   email: 'info@lumikids.rs',
   contactPerson: 'Tijana Varsaković',

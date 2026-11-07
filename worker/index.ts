@@ -16,6 +16,13 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
+    // Stare adrese → nove
+    const moved: Record<string, string> = {
+      '/blog/novogodisnja-proslava-za-decu-zaposlenih-kragujevac': '/blog/novogodisnja-proslava-za-decu-zaposlenih-vodic/',
+    };
+    const to = moved[url.pathname.replace(/\/$/, '')];
+    if (to) return Response.redirect(new URL(to, url).toString(), 301);
+
     if (url.pathname === '/api/inquiry') {
       if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: { Allow: 'POST' } });
       return handleInquiry(request, env);

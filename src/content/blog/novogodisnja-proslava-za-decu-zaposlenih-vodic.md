@@ -1,32 +1,32 @@
 ---
-title: "Novogodišnja proslava za decu zaposlenih u Kragujevcu"
-description: "Vodič za firme u Kragujevcu i Šumadiji: prostor, termini i smene, program za veliki broj dece, parking, budžet i plan do decembra za novogodišnju proslavu."
+title: "Novogodišnja proslava za decu zaposlenih: vodič za firme"
+description: "Vodič za HR: kako organizovati novogodišnju proslavu za decu zaposlenih – prostor, termini i smene, veliki broj dece, parking, budžet i plan do decembra."
 date: 2026-11-07
 author: "Aleksandra Djordjević"
 image: "/galerija/roditelji-i-deca-u-studiju.webp"
 category: "Za HR timove"
-keywords: ["novogodišnja proslava za decu Kragujevac", "Deda Mraz Kragujevac firma", "dečji program Kragujevac", "novogodišnji program za decu zaposlenih Kragujevac", "dečja novogodišnja žurka Kragujevac", "proslava za decu zaposlenih Šumadija", "Kids Day Kragujevac"]
+keywords: ["novogodišnja proslava za decu zaposlenih", "novogodišnji program za decu zaposlenih Beograd", "Deda Mraz za firmu Beograd", "dečja novogodišnja žurka za firme", "organizacija novogodišnje proslave za decu", "dečji program za firme Beograd", "proslava za decu zaposlenih u kompaniji"]
 readingTime: 7
 faq:
-  - q: "Gde organizovati novogodišnju proslavu za decu zaposlenih u Kragujevcu?"
+  - q: "Gde organizovati novogodišnju proslavu za decu zaposlenih?"
     a: "Najčešće opcije su sopstveni prostor firme, sala u poslovnom parku, sala hotela ili restorana ili prostor koji obezbeđuje izvođač programa. Važno je da prostor ima dovoljno mesta za odvojene stanice, toalete dostupne deci i parking blizu ulaza."
   - q: "Kako organizovati proslavu ako firma radi u smenama?"
     a: "Najbolje rešenje je više termina, na primer jedan radnim danom posle podne i jedan subotom pre podne. Tako i zaposleni iz prve i iz druge smene mogu da dovedu decu, a grupe su manje i program je mirniji."
   - q: "Koliko košta novogodišnji program za decu zaposlenih?"
     a: "Cena zavisi od broja dece, trajanja i onoga što uključujete. Kod Lumi Kids Studija paketi za oko 35 dece počinju od 145.000 dinara, a paketići od oko 1.500 dinara po detetu, uz konačnu ponudu prema dogovoru."
-  - q: "Da li Lumi Kids radi i van Kragujevca?"
-    a: "Da. Lumi Kids Studio je iz Kragujevca, a programe redovno realizuje i u Beogradu, kao i u drugim gradovima širom Srbije po dogovoru."
+  - q: "U kojim gradovima radi Lumi Kids?"
+    a: "Programe realizujemo u Beogradu i Kragujevcu, a po dogovoru i u drugim gradovima širom Srbije, u prostoru firme ili u prostoru koji obezbedimo."
   - q: "Koliko unapred treba početi sa planiranjem?"
     a: "Za decembarski termin idealno je početi u oktobru, a najkasnije početkom novembra. Do sredine novembra treba zatvoriti prijave dece, a do početka decembra potvrditi satnicu, paketiće i prostor."
 ---
 
-Novogodišnju proslavu za decu zaposlenih u Kragujevcu najlakše je organizovati u sopstvenom prostoru firme ili u prostoru koji obezbedi izvođač, uz program od oko dva sata i, kod većih firmi, više termina prilagođenih smenama. Ako planiranje počinje početkom novembra, još uvek je moguće dobiti dobar decembarski termin, ali odluke o prostoru i izvođaču treba doneti odmah.
+Novogodišnju proslavu za decu zaposlenih najlakše je organizovati u sopstvenom prostoru firme ili u prostoru koji obezbedi izvođač, uz program od oko dva sata i, kod većih firmi, više termina prilagođenih smenama. Ako planiranje počinje početkom novembra, još uvek je moguće dobiti dobar decembarski termin, ali odluke o prostoru i izvođaču treba doneti odmah.
 
-Ovaj vodič je namenjen HR timovima firmi u Kragujevcu i Šumadiji, od manjih kancelarija do proizvodnih kompanija sa stotinama zaposlenih.
+Ovaj vodič je namenjen HR timovima, od manjih kancelarija do kompanija i proizvodnih pogona sa stotinama zaposlenih, u Beogradu i drugim gradovima.
 
 ## Gde održati proslavu: opcije prostora
 
-Kragujevac ima dovoljno izbora, ali svaka opcija ima svoje prednosti i ograničenja.
+Izbor prostora zavisi od broja dece i grada, a svaka opcija ima svoje prednosti i ograničenja.
 
 | Opcija | Prednosti | Na šta paziti |
 |---|---|---|
@@ -41,7 +41,7 @@ Za mnoge porodice posebno je zanimljivo da dete vidi gde mama ili tata rade. Kod
 
 ### Poslovni parkovi i sale
 
-Firme smeštene u poslovnim parkovima (kao što je MIND Park u Kragujevcu) često mogu da koriste zajedničke sale ili prostore za događaje. Proverite na vreme raspoloživost, jer decembar je period kada sve firme u istom kompleksu traže isti prostor.
+Firme smeštene u poslovnim parkovima i velikim poslovnim zgradama često mogu da koriste zajedničke sale ili prostore za događaje. Proverite na vreme raspoloživost, jer decembar je period kada sve firme u istom kompleksu traže isti prostor.
 
 ### Hoteli i restorani
 
@@ -82,14 +82,14 @@ Kako izgleda jedan termin od dva sata, sa podelom na grupe koje se smenjuju, opi
 
 ## Prevoz i parking
 
-U Kragujevcu većina porodica dolazi automobilom, pa je parking jedna od prvih stvari koje treba proveriti:
+Mnoge porodice dolaze automobilom, a u većim gradovima kao što je Beograd i gužva u saobraćaju utiče na dolazak, pa je ovo jedna od prvih stvari koje treba proveriti:
 
 - dovoljan broj mesta blizu ulaza;
 - pristup za kolica, bez stepenica ili sa rampom;
 - jasne oznake i putokazi od parkinga do sale;
 - ako je događaj u pogonu van grada, informacija o dolasku u pozivu.
 
-Za zaposlene iz okolnih mesta u Šumadiji dobro je da termin ne bude prerano ujutru ni kasno uveče.
+Za zaposlene koji dolaze iz udaljenijih delova grada ili okolnih mesta dobro je da termin ne bude prerano ujutru ni u vreme najveće gužve, i da lokacija bude dostupna i javnim prevozom.
 
 ## Kombinacija sa proslavom za zaposlene
 
@@ -138,17 +138,17 @@ Kod više termina, deo troškova se ponavlja po terminu, a deo, poput dekoracije
 - [ ] Obilazak prostora sa izvođačem
 - [ ] Podsetnik roditeljima
 
-## Zašto pomaže lokalni izvođač
+## Kako izabrati izvođača
 
-Izvođač iz Kragujevca poznaje grad, prostore i saobraćaj, a to se oseća u planiranju:
+Za novogodišnju proslavu najviše vam znači izvođač koji preuzima ceo program, a ne samo jedan njegov deo:
 
-- **nema troškova puta i smeštaja** za tim;
-- **obilazak prostora je brz**, često već u istoj nedelji;
-- **lakše je dogovoriti više termina**, uključujući subotu i različite smene;
-- **brža reakcija** ako se nešto promeni u poslednjem trenutku.
+- **jedan ugovor i jedna kontakt osoba** za program, Deda Mraza, fotografisanje i paketiće;
+- **obilazak prostora pre događaja**, da se stanice i satnica prilagode sali;
+- **mogućnost više termina**, uključujući subotu i različite smene;
+- **jasan plan B** ako se nešto promeni u poslednjem trenutku.
 
 Za opšti okvir dečjih događaja tokom godine pogledajte i [Kako organizovati Kids Day u firmi](/blog/kako-organizovati-kids-day-u-firmi), a za izbor Deda Mraza [Deda Mraz za firmu: kada rezervisati i šta proveriti](/blog/deda-mraz-za-firmu-kada-rezervisati).
 
 ## Kako Lumi Kids može da pomogne
 
-Lumi Kids Studio je iz Kragujevca i organizuje novogodišnje programe za decu zaposlenih "ključ u ruke", u vašem prostoru ili u prostoru koji mi obezbedimo, uz više termina za firme koje rade u smenama. Radimo i u Beogradu, a po dogovoru i širom Srbije. Pogledajte [radionice](/radionice), uključujući [Male naučnike](/radionice/mali-naucnici) i [Bebi čula](/radionice/bebi-cula), i pošaljite [upit](/#upit) sa brojem dece i željenim terminima.
+Lumi Kids Studio organizuje novogodišnje programe za decu zaposlenih "ključ u ruke", u vašem prostoru ili u prostoru koji mi obezbedimo, uz više termina za firme koje rade u smenama. Radimo u Beogradu i Kragujevcu, a po dogovoru i širom Srbije. Pogledajte [radionice](/radionice), uključujući [Male naučnike](/radionice/mali-naucnici) i [Bebi čula](/radionice/bebi-cula), i pošaljite [upit](/#upit) sa brojem dece i željenim terminima.

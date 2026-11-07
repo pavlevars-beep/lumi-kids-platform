@@ -31,7 +31,7 @@ export const templates: Template[] = [
     preheader: 'Radionice, prijem, fotografisanje i pokloni — mi organizujemo sve, vi samo potvrdite termin.',
     blocks: [
       { p: '{pozdrav}' },
-      { p: 'Javljamo se iz Lumi Kids Studija iz Kragujevca. Organizujemo programe za decu zaposlenih po principu <b>ključ u ruke</b> — Kids Day, Dan porodice, novogodišnje i praznične programe, u vašem ili u našem prostoru.' },
+      { p: 'Javljamo se iz Lumi Kids Studija. Organizujemo programe za decu zaposlenih po principu <b>ključ u ruke</b> — Kids Day, Dan porodice, novogodišnje i praznične programe, u vašem ili u našem prostoru.' },
       { p: 'HR timovima najviše znači to što dobijaju jednog partnera za ceo događaj:' },
       { list: [
         'koncept i satnicu programa prilagođenu uzrastu i broju dece',
@@ -204,7 +204,7 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
 <tr><td style="padding:30px 32px 10px">${body}
 <p style="margin:8px 0 0;font-size:15px;line-height:1.6;color:${B.ink2}">Srdačan pozdrav,<br><b style="color:${B.ink}">Tijana Varsaković</b><br>Lumi Kids Studio · <a href="tel:+381693042721" style="color:${B.brand};text-decoration:none">+381 69 304 2721</a></p></td></tr>
 <tr><td style="padding:22px 32px;background:${B.deep};color:#c9dbeb;font-size:13px;line-height:1.6">
-<b style="color:#ffffff">Lumi Kids Studio</b> · dečji programi po porudžbini · Kragujevac i Beograd<br>
+<b style="color:#ffffff">Lumi Kids Studio</b> · dečji programi po porudžbini · Beograd i Kragujevac<br>
 <a href="${site}" style="color:#ffffff">lumikids.rs</a> · <a href="https://www.instagram.com/studiolumikids/" style="color:#ffffff">@studiolumikids</a><br>
 <span style="color:#9fb6cc">Ako ne želite da vam se ubuduće javljamo, samo odgovorite sa „odjava“.</span>
 </td></tr></table></td></tr></table></body></html>`;
