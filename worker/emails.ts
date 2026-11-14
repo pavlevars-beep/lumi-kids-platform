@@ -151,7 +151,7 @@ export const confirmationTemplate: Template = {
 export const templateByKey = (key: string) => templates.find((t) => t.key === key) || (key === confirmationTemplate.key ? confirmationTemplate : undefined);
 
 function fill(s: string, v: TemplateVars, site: string) {
-  const pozdrav = v.ime ? `Poštovani/a ${v.ime},` : 'Poštovani,';
+  const pozdrav = 'Poštovani,'; // uvek bez imena
   return s
     .replaceAll('{pozdrav}', pozdrav)
     .replaceAll('{ime}', v.ime || '')

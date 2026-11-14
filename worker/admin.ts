@@ -245,7 +245,6 @@ async function leadDetail(id: number, env: Env, flash?: string, err?: string) {
   const tl = acts.map((a) => `<li class="${esc(a.kind)}"><b>${esc(a.subject || a.kind)}</b> <span class="muted">· ${esc(fmtDate(a.created_at))}</span>${a.body ? `<pre>${esc(a.body)}</pre>` : ''}</li>`).join('');
   const defaultTpl = lead.segment === 'vrtic' ? 'vrtic' : 'prvi-kontakt';
   const tplOpts = options(templates.map((t) => [t.key, t.label]), defaultTpl);
-  const first = (lead.contact_name || '').split(' ')[0];
   const canSend = !!lead.email;
   return page(lead.company, `<div class="actions" style="justify-content:space-between;margin-bottom:12px"><h1 style="margin:0">${esc(lead.company)} ${pill(lead.status)}</h1><a href="/admin" class="btn ghost sm">← Svi leadovi</a></div>
   <div class="grid g2">
@@ -266,7 +265,6 @@ async function leadDetail(id: number, env: Env, flash?: string, err?: string) {
       <div class="card"><h2>Pošalji mejl</h2>${canSend ? `
         <form method="post" action="/admin/leads/${id}/email">
           <label><span>Šablon</span><select name="template" id="tpl">${tplOpts}</select></label>
-          <label><span>Ime u pozdravu</span><input name="ime" value="${esc(first)}" placeholder="prazno = „Poštovani,“"></label>
           <label><span>Lična rečenica na početku (opciono)</span><textarea name="licno" placeholder="npr. Videli smo da ste nedavno organizovali Dan porodice…"></textarea></label>
           <label><span>Naslov (opciono — prazno = iz šablona)</span><input name="subject"></label>
           <div class="actions"><button class="btn" onclick="return confirm('Poslati mejl na ${esc(lead.email)}?')">Pošalji na ${esc(lead.email)}</button>
