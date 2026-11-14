@@ -74,7 +74,6 @@ export const templates: Template[] = [
         ['1:05', 'Grupe se menjaju'],
         ['1:45', 'Finale: Deda Mraz deli poklone, grupna fotografija'],
       ] },
-      { img: ['deda-mraz-tim', 'Deda Mraz i tim Lumi Kids Studija'] },
       { p: 'Fotograf beleži ceo program, a fotografije su <b>dostupne u online galeriji</b> u roku od 5 radnih dana — link šaljemo vama, a vi ga prosleđujete zaposlenima. Nudimo tri paketa (Start, Standard, Premium): za ~35 dece paketi počinju od 145.000 RSD, a za veći broj dece organizujemo više grupa ili termina.' },
       { cta: ['Pošaljite upit za decembar', '{site}/?utm_source=email&utm_campaign=novogodisnji#upit'] },
       { p: 'Termini za decembar se brzo popunjavaju — ako vam odgovara, javite okvirni datum i broj dece pa šaljemo predlog u roku od 48 sati.' },
