@@ -11,7 +11,9 @@ type Block =
   | { timeline: [string, string][] }
   | { cta: [string, string] }
   | { boxes: { title: string; text: string }[] }
-  | { photos: [string, string][] };
+  | { photos: [string, string][] }
+  | { img: [string, string] }
+  | { callout: { title: string; text: string } };
 
 type Template = { key: string; label: string; audience: string; subject: string; preheader: string; hero: string; heroAlt: string; blocks: Block[] };
 
@@ -54,15 +56,16 @@ export const templates: Template[] = [
   },
   {
     key: 'novogodisnji',
-    hero: 'novogodisnji',
-    heroAlt: 'Deca i roditelji na radionici u Lumi Kids studiju',
+    hero: 'deda-mraz-beba',
+    heroAlt: 'Beba proverava bradu našeg Deda Mraza',
     label: 'Novogodišnji program — firma',
     audience: 'firma',
-    subject: 'Novogodišnji program za decu zaposlenih — slobodni termini za decembar',
-    preheader: 'Naučna radionica, Deda Mraz, pokloni i fotografije sa događaja u online galeriji.',
+    subject: 'Novogodišnji program za decu zaposlenih — i Deda Mraz sa pravom bradom',
+    preheader: 'Brada je prava (proverile su i bebe). Radionica, Deda Mraz, pokloni i fotografije — sve na jednom mestu.',
     blocks: [
       { p: '{pozdrav}' },
       { p: 'Decembar je za mnoge kompanije vreme kada se zaposlenima i njihovoj deci kaže hvala. Mi preuzimamo kompletnu organizaciju novogodišnjeg programa — vaš tim samo potvrdi datum i broj dece.' },
+      { callout: { title: 'Naš Deda Mraz ima pravu bradu', text: 'Bez lepka i bez gumica. Deca ga redovno proveravaju — malo povuku, dobro pogledaju, pa se nasmeju — i do sada niko nije posumnjao. Iskreno, ni mi više nismo sasvim sigurni. Najmlađi mu sednu u krilo bez straha, a stariji ga zapitkuju šta je sve stiglo u pismima. Strpljiv je, topao i ima vremena za svako dete.' } },
       { h: 'Primer programa (≈35 dece, 4–10 god., 120 min)' },
       { timeline: [
         ['0:00', 'Doček, bedževi sa imenom, okupljanje uz muziku'],
@@ -71,7 +74,7 @@ export const templates: Template[] = [
         ['1:05', 'Grupe se menjaju'],
         ['1:45', 'Finale: Deda Mraz deli poklone, grupna fotografija'],
       ] },
-      { photos: [['voditeljka', 'Voditelji za svaku grupu'], ['najmladji', 'Program i za najmlađe']] },
+      { img: ['deda-mraz-tim', 'Deda Mraz i tim Lumi Kids Studija'] },
       { p: 'Fotograf beleži ceo program, a fotografije su <b>dostupne u online galeriji</b> u roku od 5 radnih dana — link šaljemo vama, a vi ga prosleđujete zaposlenima. Nudimo tri paketa (Start, Standard, Premium): za ~35 dece paketi počinju od 145.000 RSD, a za veći broj dece organizujemo više grupa ili termina.' },
       { cta: ['Pošaljite upit za decembar', '{site}/?utm_source=email&utm_campaign=novogodisnji#upit'] },
       { p: 'Termini za decembar se brzo popunjavaju — ako vam odgovara, javite okvirni datum i broj dece pa šaljemo predlog u roku od 48 sati.' },
@@ -186,6 +189,10 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
         return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px"><tr>${b.photos
           .map(([img, cap]) => `<td width="50%" valign="top" style="padding:0 4px"><img src="${site}/img/email/${img}.jpg" width="260" alt="${esc(cap)}" style="display:block;width:100%;height:auto;border:0;border-radius:12px"><div style="font-size:13px;color:${B.ink3};margin-top:6px;text-align:center">${esc(cap)}</div></td>`)
           .join('')}</tr></table>`;
+      if ('img' in b)
+        return `<div style="margin:4px 0 20px"><img src="${site}/img/email/${b.img[0]}.jpg" width="536" alt="${esc(b.img[1])}" style="display:block;width:100%;height:auto;border:0;border-radius:14px"><div style="font-size:13px;color:${B.ink3};margin-top:6px;text-align:center">${esc(b.img[1])}</div></div>`;
+      if ('callout' in b)
+        return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px"><tr><td style="background:#fff4f2;border-left:4px solid #e53935;border-radius:12px;padding:16px 18px"><div style="font-size:17px;font-weight:800;color:#c62828;margin-bottom:6px">🎅 ${esc(b.callout.title)}</div><div style="font-size:15px;line-height:1.6;color:${B.ink2}">${esc(b.callout.text)}</div></td></tr></table>`;
       if ('cta' in b)
         return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:6px 0 22px"><tr><td style="background:${B.brand};border-radius:999px"><a href="${fill(b.cta[1], escVars, site)}" style="display:inline-block;padding:13px 26px;font-size:15px;font-weight:bold;color:#ffffff;text-decoration:none">${b.cta[0]} →</a></td></tr></table>`;
       return '';
@@ -221,7 +228,8 @@ export function renderTemplate(t: Template, vars: TemplateVars, site: string, su
           .map(([img, cap]) => `<td width="50%" valign="top" style="padding:0 4px"><img src="${site}/img/email/${img}.jpg" width="260" alt="${esc(cap)}" style="display:block;width:100%;height:auto;border:0;border-radius:12px"><div style="font-size:13px;color:${B.ink3};margin-top:6px;text-align:center">${esc(cap)}</div></td>`)
           .join('')}</tr></table>`;
       if ('cta' in b) return `${b.cta[0]}: ${fill(b.cta[1], {}, site)}`;
-      if ('photos' in b) return '';
+      if ('photos' in b || 'img' in b) return '';
+      if ('callout' in b) return `${b.callout.title}\n${b.callout.text}`;
       return '';
     })
     .join('\n\n') + '\n\nSrdačan pozdrav,\nTijana Varsaković\nLumi Kids Studio · +381 69 304 2721\nlumikids.rs';

@@ -66,7 +66,7 @@ form.inline label{margin:0}form.inline input,form.inline select{width:auto;min-w
 `;
 
 function page(title: string, body: string, opts: { flash?: string; err?: string; nav?: boolean } = {}) {
-  const nav = opts.nav === false ? '' : `<nav><a href="/admin">Leadovi</a><a href="/admin/leads/new">+ Novi lead</a><a href="/admin/import">Uvoz liste</a><a href="/admin/templates">Mejl šabloni</a><a href="/admin/export.csv">Izvoz CSV</a></nav><a href="/admin/logout">Odjava</a>`;
+  const nav = opts.nav === false ? '' : `<nav><a href="/admin">Leadovi</a><a href="/admin/kampanja">Kampanja</a><a href="/admin/leads/new">+ Novi lead</a><a href="/admin/import">Uvoz liste</a><a href="/admin/templates">Mejl šabloni</a><a href="/admin/export.csv">Izvoz CSV</a></nav><a href="/admin/logout">Odjava</a>`;
   const flash = opts.flash ? `<div class="flash ok">${esc(opts.flash)}</div>` : opts.err ? `<div class="flash err">${esc(opts.err)}</div>` : '';
   return new Response(
     `<!doctype html><html lang="sr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} · Lumi CMS</title>
@@ -100,6 +100,7 @@ export async function handleAdmin(req: Request, env: Env): Promise<Response> {
   if (path === '/admin/import') return req.method === 'POST' ? importCsv(req, env) : importForm(flash, err);
   if (path === '/admin/export.csv') return exportCsv(env);
   if (path === '/admin/templates') return templatesPage(env);
+  if (path === '/admin/kampanja') return req.method === 'POST' ? sendCampaign(req, env) : campaignPage(url, env, flash, err);
 
   const prev = path.match(/^\/admin\/templates\/([\w-]+)$/);
   if (prev) return previewTemplate(prev[1], url, env);
@@ -423,4 +424,99 @@ async function exportCsv(env: Env) {
   const q = (v: unknown) => { const s = String(v ?? ''); return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const csv = '﻿' + [cols.join(','), ...results.map((l) => cols.map((c) => q((l as Record<string, unknown>)[c])).join(','))].join('\n');
   return new Response(csv, { headers: { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': `attachment; filename="lumi-leadovi-${today()}.csv"`, 'cache-control': 'no-store' } });
+}
+
+// ---------- kampanja (slanje šablona većem broju leadova) ----------
+
+const BAD_ADDR = /(potrosac|customer|support|webshop|komentar|press|sales|kontaktcentar|kontakt\.centar|kontaktcc|noreply|no-reply)/i;
+const RECRUIT_ADDR = /(^|[._-])(jobs?|posao|karijera|career|recruit|konkurs|ta_team)/i;
+const CAMPAIGN_MAX = 60;
+
+async function campaignPage(url: URL, env: Env, flash?: string, err?: string) {
+  const tpl = url.searchParams.get('template') || 'novogodisnji';
+  const priority = url.searchParams.get('priority') || '';
+  const region = url.searchParams.get('region') || '';
+  const segment = url.searchParams.get('segment') ?? 'firma';
+  const limit = Math.min(Number(url.searchParams.get('limit')) || 50, CAMPAIGN_MAX);
+  const where = ["status = 'za_kontakt'", "email IS NOT NULL", "email <> ''",
+    "id NOT IN (SELECT lead_id FROM activities WHERE kind = 'mejl' AND meta LIKE ?)"];
+  const binds: unknown[] = [`%"template":"${tpl}"%`];
+  if (priority) { where.push('priority = ?'); binds.push(priority); }
+  if (region) { where.push('region = ?'); binds.push(region); }
+  if (segment) { where.push('segment = ?'); binds.push(segment); }
+  const [{ results: leads }, { results: regions }, sentToday] = await Promise.all([
+    env.DB.prepare(`SELECT * FROM leads WHERE ${where.join(' AND ')} ORDER BY score DESC, company LIMIT ?`).bind(...binds, limit).all<Lead>(),
+    env.DB.prepare("SELECT region, COUNT(*) AS n FROM leads WHERE region IS NOT NULL AND region <> '' GROUP BY region ORDER BY n DESC").all<{ region: string; n: number }>(),
+    env.DB.prepare("SELECT COUNT(*) AS n FROM activities WHERE kind = 'mejl' AND created_at >= date('now')").first<{ n: number }>(),
+  ]);
+  const t = templateByKey(tpl);
+  const rows = leads.map((l) => {
+    const bad = BAD_ADDR.test(l.email || '');
+    const warm = /topla/i.test(`${l.reason || ''} ${l.channel || ''} ${l.notes || ''}`);
+    const recruit = RECRUIT_ADDR.test(l.email || '');
+    const note = bad ? '<span class="tag" style="background:#fff0ee;color:#b42318">verovatno pogrešna adresa (korisnička podrška / prodaja)</span>'
+      : warm ? '<span class="tag" style="background:#fff9db;color:#8a6d00">topla veza — bolje lično</span>'
+      : recruit ? '<span class="tag">adresa za zapošljavanje (stiže HR-u)</span>' : '';
+    return `<tr><td><input type="checkbox" name="lead" value="${l.id}"${bad || warm ? '' : ' checked'}></td>
+      <td><b>${l.score || 0}</b> ${prio(l.priority)}</td>
+      <td><a href="/admin/leads/${l.id}" target="_blank">${esc(l.company)}</a><div class="muted">${esc(l.sector || '')}${l.city ? ' · ' + esc(l.city) : ''}</div></td>
+      <td>${esc(l.email)}<div>${note}</div></td></tr>`;
+  }).join('');
+  const used = sentToday?.n || 0;
+  return page('Kampanja', `<h1>Kampanja — slanje šablona više firmi</h1>
+  <div class="card" style="margin-bottom:16px">
+    <form class="inline" method="get">
+      <label><span>Šablon</span><select name="template">${options(templates.map((x) => [x.key, x.label]), tpl)}</select></label>
+      <label><span>Segment</span><select name="segment"><option value="">Svi</option>${options(Object.entries(SEGMENTS), segment)}</select></label>
+      <label><span>Prioritet</span><select name="priority"><option value="">Svi</option>${options([['A', 'A'], ['B', 'B'], ['C', 'C']], priority)}</select></label>
+      <label><span>Region</span><select name="region"><option value="">Svi</option>${options(regions.map((r) => [r.region, `${r.region} (${r.n})`]), region)}</select></label>
+      <label><span>Najviše</span><input type="number" name="limit" value="${limit}" min="1" max="${CAMPAIGN_MAX}" style="min-width:90px;width:90px"></label>
+      <button class="btn ghost">Prikaži primaoce</button>
+      <a class="btn ghost" target="_blank" href="/admin/templates/${esc(tpl)}">Pregled mejla</a>
+    </form>
+    <p class="muted" style="margin:0">Prikazani su leadovi u statusu „Za kontakt“, sa imejlom, kojima ovaj šablon još nije poslat — po skoru (najverovatniji prvi).
+    Danas poslato: <b>${used}</b>. Resend besplatni plan dozvoljava do 100 mejlova dnevno; za nov domen preporuka je 30–50 dnevno prvih nekoliko dana.</p>
+  </div>
+  ${leads.length ? `<form method="post" onsubmit="const n=this.querySelectorAll('input[name=lead]:checked').length; if(!n){alert('Nije izabran nijedan primalac.');return false;} return confirm('Poslati šablon „${esc(t?.label || tpl)}“ na '+n+' adresa?')">
+    <input type="hidden" name="template" value="${esc(tpl)}">
+    <div class="actions" style="margin-bottom:12px"><button class="btn">Pošalji izabranima</button>
+      <label class="check" style="margin:0"><input type="checkbox" onclick="document.querySelectorAll('input[name=lead]').forEach(c=>c.checked=this.checked)" checked> sve</label>
+      <span class="muted">Posle slanja status prelazi u „Kontaktiran“ i zakazuje se podsetnik za 5 dana.</span></div>
+    <table><thead><tr><th></th><th>Skor</th><th>Firma</th><th>Imejl</th></tr></thead><tbody>${rows}</tbody></table>
+  </form>` : '<div class="card muted">Nema leadova za ovaj filter (ili je šablon već poslat svima).</div>'}`, { flash, err });
+}
+
+async function sendCampaign(req: Request, env: Env) {
+  const fd = await req.formData();
+  const tpl = templateByKey(clean(fd.get('template'), 40));
+  if (!tpl) return redirect('/admin/kampanja?err=Nepoznat+šablon');
+  const ids = fd.getAll('lead').map((v) => Number(v)).filter(Boolean).slice(0, CAMPAIGN_MAX);
+  if (!ids.length) return redirect(`/admin/kampanja?template=${tpl.key}&err=Nije+izabran+nijedan+primalac`);
+  const { results: leads } = await env.DB.prepare(`SELECT * FROM leads WHERE id IN (${ids.map(() => '?').join(',')})`).bind(...ids).all<Lead>();
+  const site = siteUrl(env);
+  const followUp = new Date(Date.now() + 5 * 864e5).toISOString().slice(0, 10);
+  let ok = 0; const failed: string[] = [];
+  for (const lead of leads) {
+    if (!lead.email) continue;
+    const mail = renderTemplate(tpl, { ime: (lead.contact_name || '').split(' ')[0], firma: lead.company, grad: lead.city || '' }, site);
+    const res = await sendEmail(env, {
+      to: lead.email, subject: mail.subject, html: mail.html, text: mail.text,
+      tags: [{ name: 'template', value: tpl.key }, { name: 'lead', value: String(lead.id) }, { name: 'type', value: 'campaign' }],
+      headers: { 'List-Unsubscribe': '<mailto:info@lumikids.rs?subject=odjava>' },
+    });
+    if (res.ok) {
+      ok++;
+      await env.DB.batch([
+        env.DB.prepare(`INSERT INTO activities (lead_id, kind, subject, meta) VALUES (?, 'mejl', ?, ?)`).bind(lead.id, `Mejl (kampanja): ${mail.subject}`, JSON.stringify({ template: tpl.key, id: res.id, campaign: true })),
+        env.DB.prepare(`UPDATE leads SET status = CASE WHEN status IN ('novo','za_kontakt') THEN 'kontaktiran' ELSE status END,
+          next_action_at = ?, updated_at = datetime('now') WHERE id = ?`).bind(followUp, lead.id),
+      ]);
+    } else {
+      failed.push(`${lead.company}: ${res.error}`);
+      if (/limit|quota|rate/i.test(res.error || '')) break;
+    }
+    await new Promise((r) => setTimeout(r, 600)); // Resend: najviše ~2 zahteva u sekundi
+  }
+  const msg = `Poslato ${ok} od ${leads.length} mejlova.` + (failed.length ? ` Nije uspelo: ${failed.slice(0, 3).join('; ')}${failed.length > 3 ? '…' : ''}` : '');
+  return redirect(`/admin/kampanja?template=${tpl.key}&${failed.length ? 'err' : 'ok'}=${encodeURIComponent(msg)}`);
 }

@@ -25,7 +25,7 @@ export type SendResult = { ok: boolean; id?: string; error?: string };
 /** Slanje preko Resend API-ja. Bez ključa vraća ok:false sa objašnjenjem. */
 export async function sendEmail(
   env: Env,
-  msg: { to: string | string[]; subject: string; html: string; text?: string; replyTo?: string; tags?: { name: string; value: string }[] },
+  msg: { to: string | string[]; subject: string; html: string; text?: string; replyTo?: string; tags?: { name: string; value: string }[]; headers?: Record<string, string> },
 ): Promise<SendResult> {
   if (!env.RESEND_API_KEY) return { ok: false, error: 'Slanje mejlova nije podešeno (nedostaje RESEND_API_KEY).' };
   const res = await fetch('https://api.resend.com/emails', {
@@ -39,6 +39,7 @@ export async function sendEmail(
       text: msg.text,
       reply_to: msg.replyTo || env.REPLY_TO || undefined,
       tags: msg.tags,
+      headers: msg.headers,
     }),
   });
   const data = (await res.json().catch(() => ({}))) as { id?: string; message?: string };
