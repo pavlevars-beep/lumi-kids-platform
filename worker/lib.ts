@@ -11,6 +11,7 @@ export interface Env {
   TURNSTILE_SECRET?: string;
   ADMIN_PASSWORD?: string;
   SESSION_SECRET?: string;
+  RESEND_WEBHOOK_SECRET?: string;
 }
 
 export const esc = (s: unknown) =>

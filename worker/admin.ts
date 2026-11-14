@@ -26,11 +26,15 @@ type Lead = {
   priority: string | null; score: number; region: string | null; sector: string | null; channel: string | null;
   program: string | null; package: string | null; reason: string | null; evidence_url: string | null;
   linkedin: string | null; contact_url: string | null; score_why: string | null;
+  opens: number; clicks: number; last_opened_at: string | null; last_clicked_at: string | null;
 };
 type Activity = { id: number; created_at: string; kind: string; subject: string | null; body: string | null; meta: string | null };
 
 const LEAD_FIELDS = ['company', 'segment', 'city', 'website', 'employees', 'contact_name', 'contact_role', 'email', 'phone', 'source', 'status', 'value_rsd', 'next_action_at', 'notes', 'marketing_consent', 'priority', 'channel', 'program', 'package', 'reason', 'linkedin', 'contact_url'] as const;
 const PRIORITY_COLORS: Record<string, string> = { A: '#5c8f22', B: '#0288d1', C: '#9aa7b4', X: '#d92d20' };
+const engagement = (l: { opens?: number; clicks?: number }) =>
+  (l.clicks ? `<div><span class="tag" style="background:#fff0ee;color:#b42318">🖱 kliknuli ${l.clicks > 1 ? l.clicks + '×' : ''}</span></div>` : '') +
+  (l.opens ? `<div><span class="tag" style="background:#f3e8fa;color:#6c2b8a">👁 otvorili ${l.opens > 1 ? l.opens + '×' : ''}</span></div>` : '');
 const prio = (p?: string | null) => (p ? `<span class="pill" style="background:${PRIORITY_COLORS[p] || '#9aa7b4'}">${esc(p)}</span>` : '');
 
 // ---------- HTML ----------
@@ -60,7 +64,7 @@ form.inline label{margin:0}form.inline input,form.inline select{width:auto;min-w
 .flash{padding:12px 14px;border-radius:10px;margin-bottom:16px;font-weight:700}.flash.ok{background:#f1f8e8;color:#3f7a12}.flash.err{background:#fff0ee;color:#b42318}
 .tl{list-style:none;margin:0;padding:0}.tl li{border-left:3px solid var(--line);padding:4px 0 14px 14px;position:relative}
 .tl li:before{content:'';position:absolute;left:-7px;top:8px;width:11px;height:11px;border-radius:50%;background:var(--brand)}
-.tl li.mejl:before{background:#e07a10}.tl li.upit:before{background:#ff4b4b}.tl li.status:before{background:#5c8f22}
+.tl li.mejl:before{background:#e07a10}.tl li.otvoren:before{background:#8e44ad}.tl li.klik:before{background:#d92d20}.tl li.upit:before{background:#ff4b4b}.tl li.status:before{background:#5c8f22}
 .tl pre{white-space:pre-wrap;font:inherit;margin:6px 0 0;color:var(--ink2)}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .check{display:flex;gap:8px;align-items:center}.check input{width:auto}
 `;
@@ -140,16 +144,20 @@ async function list(url: URL, env: Env, flash?: string, err?: string) {
   const priority = url.searchParams.get('priority') || '';
   const region = url.searchParams.get('region') || '';
   const sort = url.searchParams.get('sort') || 'skor';
+  const engaged = url.searchParams.get('reakcija') || '';
   const where: string[] = [];
   const binds: unknown[] = [];
   if (status) { where.push('status = ?'); binds.push(status); } else where.push("status NOT IN ('izgubljeno')");
   if (segment) { where.push('segment = ?'); binds.push(segment); }
   if (priority) { where.push('priority = ?'); binds.push(priority); }
+  if (engaged === 'klik') where.push('clicks > 0');
+  else if (engaged === 'otvoren') where.push('(opens > 0 OR clicks > 0)');
   if (region) { where.push('region = ?'); binds.push(region); }
   if (q) { where.push('(company LIKE ? OR contact_name LIKE ? OR email LIKE ? OR city LIKE ? OR notes LIKE ? OR sector LIKE ? OR reason LIKE ?)'); binds.push(...Array(7).fill(`%${q}%`)); }
   const sql = `SELECT * FROM leads ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
     ORDER BY CASE status WHEN 'novo' THEN 0 ELSE 1 END, ${sort === 'sledeci'
       ? "CASE WHEN next_action_at IS NULL OR next_action_at = '' THEN 1 ELSE 0 END, next_action_at, score DESC"
+      : sort === 'reakcija' ? "clicks DESC, opens DESC, COALESCE(last_clicked_at, last_opened_at) DESC, score DESC"
       : 'score DESC, company'} LIMIT 500`;
   const [{ results: leads }, { results: counts }, { results: regions }] = await Promise.all([
     env.DB.prepare(sql).bind(...binds).all<Lead>(),
@@ -166,7 +174,7 @@ async function list(url: URL, env: Env, flash?: string, err?: string) {
     <td><a href="/admin/leads/${l.id}"><b>${esc(l.company)}</b></a><div class="muted">${esc(l.sector || SEGMENTS[l.segment] || l.segment)}${l.city ? ' · ' + esc(l.city) : ''}${l.employees ? ' · ' + esc(l.employees) : ''}${l.source === 'sajt' ? ' · <span class="tag">sa sajta</span>' : ''}</div>${l.score_why ? `<div class="muted" style="font-size:.8rem;max-width:520px">${esc(l.score_why)}</div>` : ''}</td>
     <td>${esc(l.contact_name || '')}${l.contact_role ? `<div class="muted">${esc(l.contact_role)}</div>` : ''}</td>
     <td>${l.email ? `<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>` : '<span class="muted">—</span>'}${l.phone ? `<div class="muted">${esc(l.phone)}</div>` : ''}</td>
-    <td>${pill(l.status)}</td>
+    <td>${pill(l.status)}${engagement(l)}</td>
     <td class="${l.next_action_at && l.next_action_at < t ? 'late' : ''}">${esc(fmtDate(l.next_action_at))}</td>
     <td>${l.value_rsd ? Number(l.value_rsd).toLocaleString('sr-RS') + ' RSD' : ''}</td></tr>`).join('');
   return page('Leadovi', `<h1>Leadovi</h1><div class="pipe"><a href="/admin${segment ? `?segment=${segment}` : ''}" class="${!status ? 'on' : ''}"><b>${leads.length}</b><span class="muted">Aktivni prikaz</span></a>${pipe}</div>
@@ -175,7 +183,8 @@ async function list(url: URL, env: Env, flash?: string, err?: string) {
     <label><span>Segment</span><select name="segment"><option value="">Svi</option>${options(Object.entries(SEGMENTS), segment)}</select></label>
     <label><span>Prioritet</span><select name="priority"><option value="">Svi</option>${options([['A', 'A — dokazana praksa / topla veza'], ['B', 'B — veliki / family-friendly'], ['C', 'C — moguće'], ['X', 'X — ugašeno']], priority)}</select></label>
     <label><span>Region</span><select name="region"><option value="">Svi</option>${options(regions.map((r) => [r.region, `${r.region} (${r.n})`]), region)}</select></label>
-    <label><span>Redosled</span><select name="sort">${options([['skor', 'Po skoru (najverovatniji prvi)'], ['sledeci', 'Po datumu sledećeg koraka']], sort)}</select></label>
+    <label><span>Reakcija na mejl</span><select name="reakcija">${options([['', 'Sve'], ['otvoren', 'Otvorili ili kliknuli'], ['klik', 'Kliknuli']], engaged)}</select></label>
+    <label><span>Redosled</span><select name="sort">${options([['skor', 'Po skoru (najverovatniji prvi)'], ['reakcija', 'Po reakciji na mejl'], ['sledeci', 'Po datumu sledećeg koraka']], sort)}</select></label>
     <button class="btn ghost">Filtriraj</button><a class="btn" href="/admin/leads/new">+ Novi lead</a></form>
     <table><thead><tr><th>#</th><th>Skor</th><th>Organizacija</th><th>Kontakt osoba</th><th>Kontakt</th><th>Status</th><th>Sledeći korak</th><th>Vrednost</th></tr></thead>
     <tbody>${rows || '<tr><td colspan="8" class="muted">Nema leadova za ovaj filter.</td></tr>'}</tbody></table>`, { flash, err });
@@ -246,7 +255,7 @@ async function leadDetail(id: number, env: Env, flash?: string, err?: string) {
   const defaultTpl = lead.segment === 'vrtic' ? 'vrtic' : 'prvi-kontakt';
   const tplOpts = options(templates.map((t) => [t.key, t.label]), defaultTpl);
   const canSend = !!lead.email;
-  return page(lead.company, `<div class="actions" style="justify-content:space-between;margin-bottom:12px"><h1 style="margin:0">${esc(lead.company)} ${pill(lead.status)}</h1><a href="/admin" class="btn ghost sm">← Svi leadovi</a></div>
+  return page(lead.company, `<div class="actions" style="justify-content:space-between;margin-bottom:12px"><h1 style="margin:0">${esc(lead.company)} ${pill(lead.status)}</h1>${engagement(lead) ? `<div class="actions">${engagement(lead).replace(/<\/?div>/g, '')}</div>` : ''}<a href="/admin" class="btn ghost sm">← Svi leadovi</a></div>
   <div class="grid g2">
     <div class="card"><h2>Podaci</h2><form method="post" action="/admin/leads/${id}">${leadFields(lead)}<div class="actions"><button class="btn">Sačuvaj izmene</button><span class="muted">Dodat ${esc(fmtDate(lead.created_at))}</span></div></form>
       <form method="post" action="/admin/leads/${id}/delete" onsubmit="return confirm('Obrisati lead i celu istoriju?')" style="margin-top:14px"><button class="btn ghost sm">Obriši lead</button></form></div>
@@ -436,9 +445,10 @@ async function campaignPage(url: URL, env: Env, flash?: string, err?: string) {
   const region = url.searchParams.get('region') || '';
   const segment = url.searchParams.get('segment') ?? 'firma';
   const limit = Math.min(Number(url.searchParams.get('limit')) || 50, CAMPAIGN_MAX);
-  const where = ["status = 'za_kontakt'", "email IS NOT NULL", "email <> ''",
+  const status = ['za_kontakt', 'kontaktiran', 'u_razgovoru', 'ponuda'].includes(url.searchParams.get('status') || '') ? url.searchParams.get('status')! : 'za_kontakt';
+  const where = ['status = ?', "email IS NOT NULL", "email <> ''",
     "id NOT IN (SELECT lead_id FROM activities WHERE kind = 'mejl' AND meta LIKE ?)"];
-  const binds: unknown[] = [`%"template":"${tpl}"%`];
+  const binds: unknown[] = [status, `%"template":"${tpl}"%`];
   if (priority) { where.push('priority = ?'); binds.push(priority); }
   if (region) { where.push('region = ?'); binds.push(region); }
   if (segment) { where.push('segment = ?'); binds.push(segment); }
@@ -457,7 +467,7 @@ async function campaignPage(url: URL, env: Env, flash?: string, err?: string) {
       : recruit ? '<span class="tag">adresa za zapošljavanje (stiže HR-u)</span>' : '';
     return `<tr><td><input type="checkbox" name="lead" value="${l.id}"${bad || warm ? '' : ' checked'}></td>
       <td><b>${l.score || 0}</b> ${prio(l.priority)}</td>
-      <td><a href="/admin/leads/${l.id}" target="_blank">${esc(l.company)}</a><div class="muted">${esc(l.sector || '')}${l.city ? ' · ' + esc(l.city) : ''}</div></td>
+      <td><a href="/admin/leads/${l.id}" target="_blank">${esc(l.company)}</a><div class="muted">${esc(l.sector || '')}${l.city ? ' · ' + esc(l.city) : ''}</div>${engagement(l)}</td>
       <td>${esc(l.email)}<div>${note}</div></td></tr>`;
   }).join('');
   const used = sentToday?.n || 0;
@@ -465,6 +475,7 @@ async function campaignPage(url: URL, env: Env, flash?: string, err?: string) {
   <div class="card" style="margin-bottom:16px">
     <form class="inline" method="get">
       <label><span>Šablon</span><select name="template">${options(templates.map((x) => [x.key, x.label]), tpl)}</select></label>
+      <label><span>Status</span><select name="status">${options([['za_kontakt', 'Za kontakt (prvi mejl)'], ['kontaktiran', 'Kontaktiran (podsetnik)'], ['u_razgovoru', 'U razgovoru'], ['ponuda', 'Ponuda poslata']], status)}</select></label>
       <label><span>Segment</span><select name="segment"><option value="">Svi</option>${options(Object.entries(SEGMENTS), segment)}</select></label>
       <label><span>Prioritet</span><select name="priority"><option value="">Svi</option>${options([['A', 'A'], ['B', 'B'], ['C', 'C']], priority)}</select></label>
       <label><span>Region</span><select name="region"><option value="">Svi</option>${options(regions.map((r) => [r.region, `${r.region} (${r.n})`]), region)}</select></label>
@@ -472,7 +483,7 @@ async function campaignPage(url: URL, env: Env, flash?: string, err?: string) {
       <button class="btn ghost">Prikaži primaoce</button>
       <a class="btn ghost" target="_blank" href="/admin/templates/${esc(tpl)}">Pregled mejla</a>
     </form>
-    <p class="muted" style="margin:0">Prikazani su leadovi u statusu „Za kontakt“, sa imejlom, kojima ovaj šablon još nije poslat — po skoru (najverovatniji prvi).
+    <p class="muted" style="margin:0">Prikazani su leadovi u izabranom statusu, sa imejlom, kojima ovaj šablon još nije poslat — po skoru (najverovatniji prvi).
     Danas poslato: <b>${used}</b>. Resend besplatni plan dozvoljava do 100 mejlova dnevno; za nov domen preporuka je 30–50 dnevno prvih nekoliko dana.</p>
   </div>
   ${leads.length ? `<form method="post" onsubmit="const n=this.querySelectorAll('input[name=lead]:checked').length; if(!n){alert('Nije izabran nijedan primalac.');return false;} return confirm('Poslati šablon „${esc(t?.label || tpl)}“ na '+n+' adresa?')">
