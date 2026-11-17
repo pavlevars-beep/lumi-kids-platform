@@ -107,9 +107,10 @@ export async function handleInquiry(request: Request, env: Env): Promise<Respons
       phone = COALESCE(NULLIF(phone, ''), ?), contact_name = COALESCE(NULLIF(contact_name, ''), ?) WHERE id = ?`)
       .bind(inquiryId, data.phone, data.name, leadId).run();
   } else {
+    const source = data.source_page.startsWith('/hr') ? 'letak' : 'sajt';
     const r = await env.DB.prepare(`INSERT INTO leads (company, segment, city, contact_name, email, phone, source, status, inquiry_id)
-      VALUES (?, ?, ?, ?, ?, ?, 'sajt', 'novo', ?)`)
-      .bind(data.organization || data.name, segmentMap[data.client_type] || 'firma', data.city, data.name, data.email, data.phone, inquiryId)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 'novo', ?)`)
+      .bind(data.organization || data.name, segmentMap[data.client_type] || 'firma', data.city, data.name, data.email, data.phone, source, inquiryId)
       .run();
     leadId = r.meta.last_row_id;
   }

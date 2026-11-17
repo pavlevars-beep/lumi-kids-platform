@@ -201,7 +201,7 @@ function leadFields(l: Partial<Lead> | null) {
   <div class="row"><label><span>Imejl</span><input type="email" name="email" value="${v('email')}"></label>
   <label><span>Telefon</span><input name="phone" value="${v('phone')}"></label></div>
   <div class="row"><label><span>Sajt</span><input name="website" value="${v('website')}"></label>
-  <label><span>Izvor</span><select name="source">${options([['rucno', 'Ručno / istraživanje'], ['sajt', 'Upit sa sajta'], ['preporuka', 'Preporuka'], ['linkedin', 'LinkedIn'], ['instagram', 'Instagram'], ['dogadjaj', 'Događaj / sajam'], ['postojeci', 'Postojeći klijent']], l?.source || 'rucno')}</select></label></div>
+  <label><span>Izvor</span><select name="source">${options([['rucno', 'Ručno / istraživanje'], ['sajt', 'Upit sa sajta'], ['letak', 'Letak za HR (QR)'], ['preporuka', 'Preporuka'], ['linkedin', 'LinkedIn'], ['instagram', 'Instagram'], ['dogadjaj', 'Događaj / sajam'], ['postojeci', 'Postojeći klijent']], l?.source || 'rucno')}</select></label></div>
   <div class="row3"><label><span>Status</span><select name="status">${options(STATUSES.map((s) => [s.key, s.label]), l?.status || 'za_kontakt')}</select></label>
   <label><span>Sledeći korak (datum)</span><input type="date" name="next_action_at" value="${v('next_action_at')}"></label>
   <label><span>Vrednost ponude (RSD)</span><input type="number" name="value_rsd" value="${v('value_rsd')}"></label></div>

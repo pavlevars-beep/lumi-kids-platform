@@ -6,3 +6,4 @@ dist/
 .env
 .DS_Store
 .bundle/
+print/hr-letak/out/

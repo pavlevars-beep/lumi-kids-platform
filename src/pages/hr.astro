@@ -1,0 +1,106 @@
+---
+// Stranica za HR — na nju vodi QR kod sa štampanog letka (utm_source=letak).
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import { site } from '../data/site';
+import { sampleProgram } from '../data/content';
+
+const included = [
+  { icon: 'flask', t: 'Radionice po uzrastu', d: 'Nauka, muzika, ples, robotika — i senzorna radionica za bebe.' },
+  { icon: 'gift', t: 'Deda Mraz sa pravom bradom', d: 'Strpljiv i topao, sa vremenom za svako dete. Uručuje poklone na finalu.' },
+  { icon: 'camera', t: 'Fotografisanje', d: 'Fotograf beleži program, fotografije u online galeriji za 5 radnih dana.' },
+  { icon: 'cup', t: 'Osveženje', d: 'Sokovi i grickalice za decu, uz vođenje računa o alergijama.' },
+  { icon: 'sparkle', t: 'Dekoracija i finale', d: 'Novogodišnja scenografija, muzika i zajedničko finale.' },
+  { icon: 'door', t: 'Prijem i koordinacija', d: 'Bedževi, podela po grupama, koordinator — vaš tim ne radi ništa.' },
+];
+const packages = [
+  { n: 'Start', d: 'Kompletan program: radionice po uzrastu, Deda Mraz, scenografija, fotografisanje i osveženje' },
+  { n: 'Standard', d: 'Sve iz Start paketa, uz više sadržaja i dodatke po vašem izboru' },
+  { n: 'Premium', d: 'Najbogatiji program — za veće događaje i firme koje žele nešto posebno' },
+];---
+<Base title="Za HR: novogodišnji program za decu zaposlenih" description="Novogodišnji program za decu zaposlenih ključ u ruke: radionice, Deda Mraz sa pravom bradom, pokloni, fotografisanje i osveženje. Predlog i ponuda za 48 sati.">
+  <section class="hr-hero">
+    <div class="wrap hr-hero__in">
+      <div>
+        <span class="eyebrow">Za HR i interne komunikacije</span>
+        <h1>Novogodišnji program za decu zaposlenih — <span class="hl">ključ u ruke</span></h1>
+        <p class="lead">Dva sata programa koji deca pamte, a vaš tim ne mora ništa da organizuje. Radionice po uzrastu, Deda Mraz, pokloni, fotografisanje i osveženje — kod vas ili u prostoru koji mi obezbedimo.</p>
+        <div class="stats">
+          <div><b>120 min</b><span>tipičan program</span></div>
+          <div><b>0–12 god.</b><span>grupe po uzrastu</span></div>
+          <div><b>48 h</b><span>predlog i ponuda</span></div>
+        </div>
+        <a href="#upit" class="btn btn--primary">Pošaljite upit za decembar <Icon name="arrow" size={18} /></a>
+      </div>
+      <figure class="hr-photo">
+        <img src="/galerija/deda-mraz-i-beba.webp" alt="Beba proverava bradu našeg Deda Mraza" width="1280" height="1928" />
+        <figcaption>🎅 Brada je prava — proverile su i bebe.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <h2>Šta je uključeno</h2>
+      <div class="grid grid--3">
+        {included.map((x) => <div class="card inc"><span class="icon-badge"><Icon name={x.icon} /></span><div><h3>{x.t}</h3><p>{x.d}</p></div></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two">
+      <div>
+        <h2>Primer programa</h2>
+        <p class="muted">≈35 dece, 4–10 godina, dve grupe koje se smenjuju — bez čekanja u redu. Za bebe i mališane do 4 godine pravimo mirniji kutak uz roditelje.</p>
+        <ol class="tl card">{sampleProgram.timeline.map((t) => <li><b>{t.time}</b><span>{t.text}</span></li>)}</ol>
+      </div>
+      <div>
+        <h2>Paketi</h2>
+        <p class="muted">Za ~35 dece paketi počinju od <b>145.000 RSD</b>. Za veći broj dece organizujemo više grupa ili termina, a ponudu prilagođavamo vašem budžetu.</p>
+        <div class="pk">{packages.map((p) => <div class="card"><h3>{p.n}</h3><p>{p.d}</p></div>)}</div>
+        <p class="muted small">Pokloni za decu po dogovoru, od oko 1.500 RSD po detetu.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section upit" id="upit">
+    <div class="wrap upit__in">
+      <div class="upit__copy">
+        <span class="eyebrow eyebrow--light">Upit</span>
+        <h2>Javite datum i broj dece</h2>
+        <p>Termini za decembar se popunjavaju. U roku od {site.responseTime} šaljemo predlog programa sa satnicom i ponudu.</p>
+        <p class="who"><b>{site.contactPerson}</b><br /><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a><br /><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      </div>
+      <InquiryForm occasion="Novogodišnji program" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hr-hero { padding: clamp(40px, 6vw, 72px) 0; }
+  .hr-hero__in { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  .hl { color: var(--brand); }
+  .lead { font-size: 1.12rem; color: var(--ink-2); }
+  .stats { display: flex; gap: 28px; flex-wrap: wrap; margin: 24px 0 28px; }
+  .stats b { display: block; font-size: 1.6rem; color: var(--brand-deep); line-height: 1.1; }
+  .stats span { color: var(--ink-3); font-weight: 700; font-size: .9rem; }
+  .hr-photo { margin: 0; position: relative; }
+  .hr-photo img { width: 100%; max-height: 560px; object-fit: cover; object-position: 50% 30%; border-radius: 24px; box-shadow: var(--shadow); }
+  .hr-photo figcaption { position: absolute; left: 16px; bottom: 16px; background: #fff; padding: 8px 14px; border-radius: 999px; font-weight: 800; color: #c62828; box-shadow: var(--shadow); }
+  .inc { display: flex; gap: 14px; }
+  .inc h3 { margin: 0 0 4px; font-size: 1.05rem; } .inc p { margin: 0; color: var(--ink-2); font-size: .96rem; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .tl { list-style: none; padding: 8px 22px; margin: 0; }
+  .tl li { display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+  .tl li:last-child { border: 0; } .tl b { color: var(--brand); }
+  .pk { display: grid; gap: 12px; } .pk h3 { margin: 0 0 4px; } .pk p { margin: 0; color: var(--ink-2); }
+  .muted { color: var(--ink-2); } .small { font-size: .9rem; margin-top: 12px; }
+  .upit { background: var(--brand-deep); color: #d6e4f0; }
+  .upit h2 { color: #fff; }
+  .eyebrow--light { color: var(--yellow); }
+  .upit__in { display: grid; grid-template-columns: .8fr 1.4fr; gap: 48px; align-items: start; }
+  .who a { color: #fff; }
+  @media (max-width: 900px) { .hr-hero__in, .two, .upit__in { grid-template-columns: 1fr; } }
+</style>
