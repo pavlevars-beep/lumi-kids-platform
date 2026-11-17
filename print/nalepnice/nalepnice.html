@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<title>Lumi Kids — nalepnice za koverte</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<!--
+  A4 list sa 10 nalepnica 95 × 55 mm (2 kolone × 5 redova), bez razmaka između —
+  štamparija seče: 1 vertikalni + 6 horizontalnih rezova (oznake za sečenje su na marginama).
+  ?linije=1 dodaje tanke isprekidane linije (za sečenje makazama / proveru).
+-->
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; font-family: 'Nunito', sans-serif; color: #0f2a44; }
+  .sheet { width: 210mm; height: 297mm; position: relative; }
+  :root { --w: 95mm; --h: 55mm; --x: 10mm; --y: 11mm; }
+  .grid { position: absolute; left: var(--x); top: var(--y); display: grid; grid-template-columns: repeat(2, var(--w)); grid-auto-rows: var(--h); }
+  .label { position: relative; padding: 4mm 5mm 7mm; display: grid; grid-template-columns: 33mm 1fr; gap: 4.5mm; align-items: center; overflow: hidden; }
+  .lines .label { outline: 0.2mm dashed #b8c4cf; outline-offset: -0.1mm; }
+  .label img { width: 33mm; height: auto; display: block; }
+  .to { min-width: 0; }
+  .firma { font-size: 5.1mm; font-weight: 900; line-height: 1.12; letter-spacing: -0.01em; }
+  .sektor { font-size: 3.3mm; font-weight: 800; color: #0277bd; margin-top: 1.4mm; line-height: 1.25; }
+  .osoba { font-size: 3.2mm; font-weight: 800; margin-top: 1.8mm; line-height: 1.25; }
+  .titula { font-size: 2.55mm; font-weight: 600; color: #6b7d8f; line-height: 1.3; margin-top: .3mm; }
+  .tema { position: absolute; left: 5mm; right: 5mm; bottom: 3.6mm; font-size: 2.45mm; font-weight: 700; color: #6b7d8f; display: flex; align-items: center; gap: 2mm; }
+  .tema::before { content: ''; flex: none; width: 12mm; height: 1mm; border-radius: 1mm; background: linear-gradient(90deg, #ff4b4b 0 16.6%, #ff9e3d 0 33.3%, #ffd700 0 50%, #8bc34a 0 66.6%, #03a9f4 0 83.3%, #0277bd 0); }
+  /* oznake za sečenje (na marginama, van nalepnica) */
+  .crop { position: absolute; background: #000; }
+  .crop.v { width: 0.15mm; height: 6mm; }
+  .crop.h { height: 0.15mm; width: 6mm; }
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet"><div class="grid" id="grid"></div></div>
+<script>
+  const firme = [
+    { firma: 'TNation' },
+    { firma: 'MK Group', osoba: 'n/r gđe Danijele Havrilčak', titula: 'Chief Human Resources Officer' },
+    { firma: 'AIK Banka' },
+    { firma: 'Comtrade' },
+    { firma: 'A1 Srbija', osoba: 'n/r gđe Natalije Pešić', titula: 'Rukovodilac za ljudske resurse i razvoj' },
+    { firma: 'NLB Komercijalna banka', osoba: 'n/r gđe Slavice Petrović', titula: 'Direktorka ljudskih resursa i organizacionog razvoja' },
+    { firma: 'Banca Intesa', osoba: 'n/r gđe Ivane Todorović', titula: 'Direktorka Sektora za ljudske resurse i organizaciju' },
+    { firma: 'Generali Osiguranje Srbija' },
+    { firma: 'Knauf' },
+    { firma: 'Dipos d.o.o.' },
+  ];
+  const q = new URLSearchParams(location.search);
+  if (q.get('linije') === '1') document.body.classList.add('lines');
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  document.getElementById('grid').innerHTML = firme.map((f) => `
+    <div class="label">
+      <img src="../hr-letak/img/logo.png" alt="">
+      <div class="to">
+        <div class="firma">${esc(f.firma)}</div>
+        <div class="sektor">Sektor za ljudske resurse</div>
+        ${f.osoba ? `<div class="osoba">${esc(f.osoba)}</div><div class="titula">${esc(f.titula || '')}</div>` : ''}
+      </div>
+      <div class="tema">Novogodišnji program za decu zaposlenih</div>
+    </div>`).join('');
+
+  // oznake za sečenje: na svakoj liniji reza, u marginama lista
+  const mm = (v) => v + 'mm';
+  const X = 10, Y = 11, W = 95, H = 55, COLS = 2, ROWS = 5, GAP = 1.5, LEN = 6;
+  const sheet = document.getElementById('sheet');
+  const add = (cls, left, top) => { const d = document.createElement('div'); d.className = 'crop ' + cls; d.style.left = mm(left); d.style.top = mm(top); sheet.appendChild(d); };
+  for (let c = 0; c <= COLS; c++) { const x = X + c * W; add('v', x - 0.075, Y - GAP - LEN); add('v', x - 0.075, Y + ROWS * H + GAP); }
+  for (let r = 0; r <= ROWS; r++) { const y = Y + r * H; add('h', X - GAP - LEN, y - 0.075); add('h', X + COLS * W + GAP, y - 0.075); }
+</script>
+</body>
+</html>
